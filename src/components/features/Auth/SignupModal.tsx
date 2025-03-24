@@ -58,9 +58,9 @@ const SignupModal: React.FC<SignupModalProps> = ({
                 type='text'
                 placeholder='Email Address / Phone Number'
                 className={`${styles.inputField} ${
-                  errors.emailOrPhone ? styles.inputError : ''
+                  errors.email ? styles.inputError : ''
                 }`}
-                {...register('emailOrPhone', {
+                {...register('email', {
                   required: 'Email or phone number is required',
                   pattern: {
                     value:
@@ -69,10 +69,8 @@ const SignupModal: React.FC<SignupModalProps> = ({
                   },
                 })}
               />
-              {errors.emailOrPhone && (
-                <p className={styles.errorMessage}>
-                  {errors.emailOrPhone.message}
-                </p>
+              {errors.email && (
+                <p className={styles.errorMessage}>{errors.email.message}</p>
               )}
             </div>
 

@@ -6,10 +6,25 @@ import { FaChevronDown } from 'react-icons/fa'
 import { LoginFormInputs, SignupFormInputs } from '../types/auth.type'
 import LoginModal from '../components/features/Auth/LoginModal'
 import SignupModal from '../components/features/Auth/SignupModal'
+import { useLogin } from '../hooks/useAuth'
 
 const HeroPulse: React.FC = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false)
+
+  const { mutate: login, isPending: isLoggingIn } = useLogin()
+
+  // Auth handlers
+  const handleLoginSuccess = (data: LoginFormInputs) => {
+    login(data)
+  }
+
+  const handleSignupSuccess = (data: SignupFormInputs) => {
+    console.log('Signup successful:', data)
+    closeSignupModal()
+    // After signup you might want to automatically log them in
+    // login({ email: data.email, password: data.password });
+  }
 
   // Modal control functions
   const openLoginModal = () => {
@@ -28,25 +43,6 @@ const HeroPulse: React.FC = () => {
 
   const closeSignupModal = () => {
     setIsSignupModalOpen(false)
-  }
-
-  // Auth handlers
-  const handleLoginSuccess = (data: LoginFormInputs) => {
-    console.log('Login successful:', data)
-    closeLoginModal()
-    // Here you would typically:
-    // 1. Store auth token in localStorage/cookies
-    // 2. Update auth context/state
-    // 3. Redirect user or show authenticated content
-  }
-
-  const handleSignupSuccess = (data: SignupFormInputs) => {
-    console.log('Signup successful:', data)
-    closeSignupModal()
-    // Typically you might:
-    // 1. Show a welcome/verification message
-    // 2. Automatically log the user in
-    // 3. Redirect to profile completion
   }
 
   return (
@@ -111,6 +107,7 @@ const HeroPulse: React.FC = () => {
       <LoginModal
         isOpen={isLoginModalOpen}
         onClose={closeLoginModal}
+        isLoggingIn={isLoggingIn}
         onLoginSuccess={handleLoginSuccess}
         onSignupRedirect={openSignupModal}
       />

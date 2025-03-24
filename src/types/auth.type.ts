@@ -1,12 +1,12 @@
 export interface SignupFormInputs {
-  emailOrPhone: string
+  email: string
   name: string
   username: string
   password: string
 }
 
 export interface LoginFormInputs {
-  emailOrPhone: string
+  email: string
   password: string
 }
 
@@ -24,6 +24,7 @@ export interface LoginModalProps {
   isOpen: boolean
   onClose: () => void
   onLoginSuccess?: (data: LoginFormInputs) => void
+  isLoggingIn?: boolean
   onSignupRedirect: () => void
   title?: string
   submitButtonText?: string

@@ -6,6 +6,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
   isOpen,
   onClose,
   onLoginSuccess,
+  isLoggingIn,
   onSignupRedirect,
   title = 'Login',
   submitButtonText = 'Login',
@@ -14,7 +15,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginFormInputs>()
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
@@ -58,9 +59,9 @@ const LoginModal: React.FC<LoginModalProps> = ({
                 type='text'
                 placeholder='Email Address / Phone Number'
                 className={`${styles.inputField} ${
-                  errors.emailOrPhone ? styles.inputError : ''
+                  errors.email ? styles.inputError : ''
                 }`}
-                {...register('emailOrPhone', {
+                {...register('email', {
                   required: 'Email or phone number is required',
                   pattern: {
                     value:
@@ -69,10 +70,8 @@ const LoginModal: React.FC<LoginModalProps> = ({
                   },
                 })}
               />
-              {errors.emailOrPhone && (
-                <p className={styles.errorMessage}>
-                  {errors.emailOrPhone.message}
-                </p>
+              {errors.email && (
+                <p className={styles.errorMessage}>{errors.email.message}</p>
               )}
             </div>
 
@@ -103,9 +102,9 @@ const LoginModal: React.FC<LoginModalProps> = ({
             <button
               type='submit'
               className={styles.loginButton}
-              disabled={isSubmitting}
+              disabled={isLoggingIn}
             >
-              {isSubmitting ? 'Please wait...' : submitButtonText}
+              {isLoggingIn ? 'Please wait...' : submitButtonText}
             </button>
           </form>
 
