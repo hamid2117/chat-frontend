@@ -37,11 +37,7 @@ export const AUTH_QUERY_KEY = ['auth-user']
 
 // Hook for checking auth status
 export function useAuthStatus() {
-  const {
-    data: { data: user } = {},
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: AUTH_QUERY_KEY,
     queryFn: authApi.getMe,
     retry: false,
@@ -51,6 +47,7 @@ export function useAuthStatus() {
   if (error) {
     console.error('Auth status error:', error)
   }
+  const user = data?.data || null
 
   return {
     user,
@@ -127,11 +124,9 @@ export function useLogout() {
   })
 }
 export function useSignup() {
-  const queryClient = useQueryClient()
-
   return useMutation({
     mutationFn: async (signupData: any) => {
-      const response = await httpClient.post('/auth/signup', signupData)
+      const response = await httpClient.post('/auth/register', signupData)
       return response.data
     },
     onSuccess: () => {
@@ -139,8 +134,6 @@ export function useSignup() {
         position: 'top-right',
         autoClose: 3000,
       })
-
-      // No need to update auth cache or navigate - user still needs to login
     },
     onError: (error: any) => {
       const errorMessage =

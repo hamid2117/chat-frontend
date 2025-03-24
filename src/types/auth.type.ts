@@ -1,7 +1,7 @@
 export interface SignupFormInputs {
   email: string
-  name: string
-  username: string
+  displayName: string
+  userName: string
   password: string
 }
 
@@ -12,6 +12,7 @@ export interface LoginFormInputs {
 
 export interface SignupModalProps {
   isOpen: boolean
+  isSigningUp: boolean
   onClose: () => void
   onSignupSuccess?: (data: SignupFormInputs) => void
   onLoginRedirect: () => void
@@ -32,7 +33,8 @@ export interface LoginModalProps {
 }
 
 export interface UserData {
-  name: string
+  displayName: string
+  userName: string
   email: string
   profilePicture: string
   isVerified: boolean

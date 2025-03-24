@@ -11,14 +11,12 @@ import styles from './LeftSidebar.module.scss'
 import { useLogout } from '../../hooks/useAuth'
 import { UserData } from '../../types/auth.type'
 
-const LeftSidebar = ({ user }: UserData) => {
-  console.log(user)
+const LeftSidebar: React.FC<{ user: UserData }> = ({ user }) => {
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false)
   const { mutate: logout } = useLogout()
   const avatarRef = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

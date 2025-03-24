@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useAuthStatus } from './hooks/useAuth'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import VerificationPage from './pages/VerificationPage.tsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +31,7 @@ function AppRoutes() {
         path='/'
         element={isAuthenticated ? <Navigate to='/home' /> : <LandingPage />}
       />
+      <Route path='user/verify-email' element={<VerificationPage />} />
 
       <Route
         path='/home'

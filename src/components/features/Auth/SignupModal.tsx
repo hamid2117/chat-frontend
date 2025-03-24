@@ -5,6 +5,7 @@ import { SignupFormInputs, SignupModalProps } from '../../../types/auth.type'
 const SignupModal: React.FC<SignupModalProps> = ({
   isOpen,
   onClose,
+  isSigningUp,
   onSignupSuccess,
   onLoginRedirect,
   title = 'Signup',
@@ -14,15 +15,11 @@ const SignupModal: React.FC<SignupModalProps> = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignupFormInputs>()
 
   const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
     try {
-      // Here you would typically make an API call to register the user
-      console.log('Signup form submitted with:', data)
-
-      // If signup is successful
       if (onSignupSuccess) {
         onSignupSuccess(data)
       }
@@ -79,9 +76,9 @@ const SignupModal: React.FC<SignupModalProps> = ({
                 type='text'
                 placeholder='Display Name'
                 className={`${styles.inputField} ${
-                  errors.name ? styles.inputError : ''
+                  errors.displayName ? styles.inputError : ''
                 }`}
-                {...register('name', {
+                {...register('displayName', {
                   required: 'Display name is required',
                   minLength: {
                     value: 2,
@@ -89,8 +86,10 @@ const SignupModal: React.FC<SignupModalProps> = ({
                   },
                 })}
               />
-              {errors.name && (
-                <p className={styles.errorMessage}>{errors.name.message}</p>
+              {errors.displayName && (
+                <p className={styles.errorMessage}>
+                  {errors.displayName.message}
+                </p>
               )}
             </div>
 
@@ -99,9 +98,9 @@ const SignupModal: React.FC<SignupModalProps> = ({
                 type='text'
                 placeholder='Username'
                 className={`${styles.inputField} ${
-                  errors.username ? styles.inputError : ''
+                  errors.userName ? styles.inputError : ''
                 }`}
-                {...register('username', {
+                {...register('userName', {
                   required: 'Username is required',
                   pattern: {
                     value: /^[a-zA-Z0-9_-]+$/,
@@ -114,8 +113,8 @@ const SignupModal: React.FC<SignupModalProps> = ({
                   },
                 })}
               />
-              {errors.username && (
-                <p className={styles.errorMessage}>{errors.username.message}</p>
+              {errors.userName && (
+                <p className={styles.errorMessage}>{errors.userName.message}</p>
               )}
             </div>
 
@@ -142,9 +141,9 @@ const SignupModal: React.FC<SignupModalProps> = ({
             <button
               type='submit'
               className={styles.signupButton}
-              disabled={isSubmitting}
+              disabled={isSigningUp}
             >
-              {isSubmitting ? 'Please wait...' : submitButtonText}
+              {isSigningUp ? 'Please wait...' : submitButtonText}
             </button>
           </form>
 

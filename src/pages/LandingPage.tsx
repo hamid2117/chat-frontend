@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './LandingPage.module.scss'
 import worldImage from '../../public/icons/hero.svg'
 import logo from '../../public/icons/logo.svg'
@@ -6,27 +6,27 @@ import { FaChevronDown } from 'react-icons/fa'
 import { LoginFormInputs, SignupFormInputs } from '../types/auth.type'
 import LoginModal from '../components/features/Auth/LoginModal'
 import SignupModal from '../components/features/Auth/SignupModal'
-import { useLogin } from '../hooks/useAuth'
+import { useLogin, useSignup } from '../hooks/useAuth'
+import VerificationSentModal from '../components/features/Auth/VerificationSentModal'
 
 const HeroPulse: React.FC = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false)
+  const [showVerificationModal, setShowVerificationModal] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
 
   const { mutate: login, isPending: isLoggingIn } = useLogin()
+  const { mutate: signUp, isPending: isSigningUp, isSuccess } = useSignup()
 
-  // Auth handlers
   const handleLoginSuccess = (data: LoginFormInputs) => {
     login(data)
   }
 
-  const handleSignupSuccess = (data: SignupFormInputs) => {
-    console.log('Signup successful:', data)
-    closeSignupModal()
-    // After signup you might want to automatically log them in
-    // login({ email: data.email, password: data.password });
+  const handleSignupSuccess = async (data: SignupFormInputs) => {
+    signUp(data)
+    setUserEmail(data.email)
   }
 
-  // Modal control functions
   const openLoginModal = () => {
     setIsLoginModalOpen(true)
     setIsSignupModalOpen(false)
@@ -44,6 +44,12 @@ const HeroPulse: React.FC = () => {
   const closeSignupModal = () => {
     setIsSignupModalOpen(false)
   }
+  useEffect(() => {
+    if (isSuccess) {
+      closeSignupModal()
+      setShowVerificationModal(true)
+    }
+  }, [isSuccess])
 
   return (
     <div className={styles.homeContainer}>
@@ -115,8 +121,15 @@ const HeroPulse: React.FC = () => {
       <SignupModal
         isOpen={isSignupModalOpen}
         onClose={closeSignupModal}
+        isSigningUp={isSigningUp}
         onSignupSuccess={handleSignupSuccess}
         onLoginRedirect={openLoginModal}
+      />
+
+      <VerificationSentModal
+        isOpen={showVerificationModal}
+        onClose={() => setShowVerificationModal(false)}
+        email={userEmail}
       />
     </div>
   )
