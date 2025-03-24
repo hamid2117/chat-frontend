@@ -57,92 +57,90 @@ const Hero = () => {
   ]
 
   return (
-    <div className={styles['chat-container']}>
+    <div className={styles.chatContainer}>
       {/* Top Navbar - Full Width */}
-      <div className={styles['top-navbar']}>
-        <div className={styles['search-container']}>
+      <div className={styles.topNavbar}>
+        <div className={styles.searchContainer}>
           <input
             type='text'
             placeholder='Search QLU Recruiting'
-            className={styles['search-input']}
+            className={styles.searchInput}
           />
         </div>
       </div>
 
-      <div className={styles['main-content']}>
+      <div className={styles.mainContent}>
         {/* Left Sidebar Navigation */}
-        <div className={styles['left-sidebar']}>
-          <div className={styles['logo-container']}>
+        <div className={styles.leftSidebar}>
+          <div className={styles.logoContainer}>
             <img
               src='https://via.placeholder.com/40'
               alt='Logo'
-              className={styles['user-avatar']}
+              className={styles.userAvatar}
             />
           </div>
-          <div className={styles['nav-icons']}>
-            <div
-              className={`${styles['nav-icon-wrapper']} ${styles['active']}`}
-            >
-              <BsHouseDoor className={styles['nav-icon']} />
+          <div className={styles.navIcons}>
+            <div className={`${styles.navIconWrapper} ${styles.active}`}>
+              <BsHouseDoor className={styles.navIcon} />
             </div>
-            <div className={styles['nav-icon-wrapper']}>
-              <BsBell className={styles['nav-icon']} />
+            <div className={styles.navIconWrapper}>
+              <BsBell className={styles.navIcon} />
             </div>
-            <div className={styles['nav-icon-wrapper']}>
-              <BsChatDots className={styles['nav-icon']} />
+            <div className={styles.navIconWrapper}>
+              <BsChatDots className={styles.navIcon} />
             </div>
-            <div className={styles['nav-icon-wrapper']}>
-              <BsThreeDotsVertical className={styles['nav-icon']} />
-              <span className={styles['nav-text']}>More</span>
+            <div className={styles.navIconWrapper}>
+              <BsThreeDotsVertical className={styles.navIcon} />
+              <span className={styles.navText}>More</span>
             </div>
           </div>
-          <div className={styles['sidebar-bottom']}>
-            <BsPlusLg className={styles['nav-icon']} />
+          <div className={styles.sidebarBottom}>
+            <BsPlusLg className={styles.navIcon} />
             <img
               src='https://via.placeholder.com/40'
               alt='User'
-              className={styles['user-avatar']}
+              className={styles.userAvatar}
             />
           </div>
         </div>
 
         {/* Chat List Section */}
-        <div className={styles['chat-list']}>
+        <div className={styles.chatList}>
           {/* Header */}
-          <div className={styles['chat-list-header']}>
+          <div className={styles.chatListHeader}>
             <h2>QLU Recruiting</h2>
           </div>
 
           {/* Main Navigation */}
-          <div className={styles['main-menu']}>
-            <div className={styles['menu-item']}>
-              <BsPerson className={styles['menu-icon']} />
+          <div className={styles.mainMenu}>
+            <div className={styles.menuItem}>
+              <BsPerson className={styles.menuIcon} />
               <p>Groups</p>
             </div>
-            <div className={styles['menu-item']}>
-              <BsChatDots className={styles['menu-icon']} />
+            <div className={styles.menuItem}>
+              <BsChatDots className={styles.menuIcon} />
               <p>Direct Messages</p>
             </div>
           </div>
 
           {/* Groups section */}
-          <div className={styles['group-section']}>
-            <div className={styles['section-header']}>
-              <BsChevronDown className={styles['dropdown-icon']} />
+          <div className={styles.groupSection}>
+            <div className={styles.sectionHeader}>
+              <BsChevronDown className={styles.dropdownIcon} />
               <p>Groups</p>
             </div>
-            <div className={styles['group-list']}>
+            <div className={styles.groupList}>
               {groupChats.map((group) => (
                 <div
                   key={group.id}
-                  className={`${styles['group-item']} ${
-                    group.active ? styles['active'] : ''
+                  className={`${styles.groupItem} ${
+                    group.active ? styles.active : ''
                   }`}
                 >
                   <img
                     src='https://via.placeholder.com/30'
                     alt='Group'
-                    className={styles['group-avatar']}
+                    className={styles.groupAvatar}
                   />
                   <p>{group.name}</p>
                 </div>
@@ -151,18 +149,18 @@ const Hero = () => {
           </div>
 
           {/* Direct Messages section */}
-          <div className={styles['group-section']}>
-            <div className={styles['section-header']}>
-              <BsChevronDown className={styles['dropdown-icon']} />
+          <div className={styles.groupSection}>
+            <div className={styles.sectionHeader}>
+              <BsChevronDown className={styles.dropdownIcon} />
               <p>Direct Messages</p>
             </div>
-            <div className={styles['group-list']}>
+            <div className={styles.groupList}>
               {directMessages.map((dm) => (
-                <div key={dm.id} className={styles['group-item']}>
+                <div key={dm.id} className={styles.groupItem}>
                   <img
                     src='https://via.placeholder.com/30'
                     alt='User'
-                    className={styles['group-avatar']}
+                    className={styles.groupAvatar}
                   />
                   <p>{dm.name}</p>
                 </div>
@@ -172,90 +170,90 @@ const Hero = () => {
         </div>
 
         {/* Chat Content Area */}
-        <div className={styles['chat-content']}>
+        <div className={styles.chatContent}>
           {/* Chat Header */}
-          <div className={styles['chat-header']}>
-            <div className={styles['chat-title']}>
+          <div className={styles.chatHeader}>
+            <div className={styles.chatTitle}>
               <span>Log Rocket Group</span>
-              <span className={styles['arrow']}>▶</span>
+              <span className={styles.arrow}>▶</span>
             </div>
-            <div className={styles['chat-controls']}>
-              <div className={styles['user-avatars']}>
+            <div className={styles.chatControls}>
+              <div className={styles.userAvatars}>
                 <img
                   src='https://via.placeholder.com/30'
                   alt='User'
-                  className={styles['user-avatar']}
+                  className={styles.userAvatar}
                 />
                 <img
                   src='https://via.placeholder.com/30'
                   alt='User'
-                  className={styles['user-avatar']}
+                  className={styles.userAvatar}
                 />
                 <img
                   src='https://via.placeholder.com/30'
                   alt='User'
-                  className={styles['user-avatar']}
+                  className={styles.userAvatar}
                 />
               </div>
-              <BsMic className={styles['control-icon']} />
-              <BsCameraVideo className={styles['control-icon']} />
+              <BsMic className={styles.controlIcon} />
+              <BsCameraVideo className={styles.controlIcon} />
             </div>
           </div>
 
           {/* Messages Container */}
-          <div className={styles['messages-container']}>
+          <div className={styles.messagesContainer}>
             {chatMessages.map((msg) => (
-              <div key={msg.id} className={styles['message']}>
+              <div key={msg.id} className={styles.message}>
                 <img
                   src='https://via.placeholder.com/40'
                   alt={msg.sender}
-                  className={styles['sender-avatar']}
+                  className={styles.senderAvatar}
                 />
-                <div className={styles['message-content']}>
-                  <div className={styles['sender-name']}>{msg.sender}</div>
-                  <div className={styles['message-text']}>{msg.content}</div>
+                <div className={styles.messageContent}>
+                  <div className={styles.senderName}>{msg.sender}</div>
+                  <div className={styles.messageText}>{msg.content}</div>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Message Input Container */}
-          <div className={styles['message-input-container']}>
+          <div className={styles.messageInputContainer}>
             {/* Upper formatting toolbar */}
-            <div className={styles['formatting-toolbar']}>
-              <div className={styles['toolbar-left']}>
-                <BsTypeBold className={styles['toolbar-icon']} />
-                <BsTypeItalic className={styles['toolbar-icon']} />
-                <BsLink45Deg className={styles['toolbar-icon']} />
-                <div className={styles['divider']}></div>
-                <BsListUl className={styles['toolbar-icon']} />
-                <BsListOl className={styles['toolbar-icon']} />
-                <div className={styles['divider']}></div>
-                <BsCode className={styles['toolbar-icon']} />
+            <div className={styles.formattingToolbar}>
+              <div className={styles.toolbarLeft}>
+                <BsTypeBold className={styles.toolbarIcon} />
+                <BsTypeItalic className={styles.toolbarIcon} />
+                <BsLink45Deg className={styles.toolbarIcon} />
+                <div className={styles.divider}></div>
+                <BsListUl className={styles.toolbarIcon} />
+                <BsListOl className={styles.toolbarIcon} />
+                <div className={styles.divider}></div>
+                <BsCode className={styles.toolbarIcon} />
               </div>
             </div>
 
             {/* Message input field */}
-            <div className={styles['message-placeholder']}>
-              <p className={styles['placeholder-text']}>
+            <div className={styles.messagePlaceholder}>
+              <p className={styles.placeholderText}>
                 Message Log Rocket Updates
               </p>
             </div>
 
             {/* Lower action toolbar */}
-            <div className={styles['action-toolbar']}>
-              <div className={styles['action-left']}>
-                <BsPlusLg className={styles['action-icon']} />
-                <BsTypeItalic className={styles['action-icon']} />
-                <BsEmojiSmile className={styles['action-icon']} />
-                <div className={styles['divider']}></div>
-                <BsCameraVideo className={styles['action-icon']} />
-                <BsMic className={styles['action-icon']} />
-                <div className={styles['divider']}></div>
-                <BsImage className={styles['action-icon']} />
+            <div className={styles.actionToolbar}>
+              <div className={styles.actionLeft}>
+                <BsPlusLg className={styles.actionIcon} />
+                <BsTypeItalic className={styles.actionIcon} />
+                <BsEmojiSmile className={styles.actionIcon} />
+                <div className={styles.divider}></div>
+                <BsCameraVideo className={styles.actionIcon} />
+                <BsMic className={styles.actionIcon} />
+                <div className={styles.divider}></div>
+                <BsImage className={styles.actionIcon} />
               </div>
-              <div className={styles['action-right']}>
-                <RiSendPlaneFill className={styles['send-icon']} />
+              <div className={styles.actionRight}>
+                <RiSendPlaneFill className={styles.sendIcon} />
               </div>
             </div>
           </div>

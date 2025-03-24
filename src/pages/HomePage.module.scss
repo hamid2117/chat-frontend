@@ -4,7 +4,7 @@
 $left-sidebar-width: 60px;
 $chat-list-width: 280px;
 
-.chat-container {
+.chatContainer {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -12,7 +12,7 @@ $chat-list-width: 280px;
   overflow: hidden;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-  .top-navbar {
+  .topNavbar {
     background-color: $primary-color;
     padding: 10px 15px;
     display: flex;
@@ -20,11 +20,11 @@ $chat-list-width: 280px;
     width: 100%;
     z-index: 10;
 
-    .search-container {
+    .searchContainer {
       width: 100%;
       max-width: 600px;
 
-      .search-input {
+      .searchInput {
         width: 100%;
         padding: 8px 15px;
         border-radius: 4px;
@@ -40,7 +40,7 @@ $chat-list-width: 280px;
     }
   }
 
-  .main-content {
+  .mainContent {
     display: flex;
     flex: 1;
     overflow: hidden;
@@ -49,7 +49,7 @@ $chat-list-width: 280px;
 }
 
 // Left Sidebar Styles
-.left-sidebar {
+.leftSidebar {
   width: $left-sidebar-width;
   background-color: $primary-color;
   display: flex;
@@ -58,57 +58,57 @@ $chat-list-width: 280px;
   color: white;
   padding: 15px 0;
 
-  .logo-container {
+  .logoContainer {
     margin-bottom: 20px;
   }
 
-  .user-avatar {
+  .userAvatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
   }
 
-  .nav-icons {
+  .navIcons {
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-grow: 1;
 
-    .nav-icon-wrapper {
+    .navIconWrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
       margin: 15px 0;
       cursor: pointer;
 
-      .nav-icon {
+      .navIcon {
         font-size: 22px;
         color: rgba(255, 255, 255, 0.7);
       }
 
-      .nav-text {
+      .navText {
         font-size: 10px;
         margin-top: 3px;
       }
 
-      &.active .nav-icon {
+      &.active .navIcon {
         color: white;
       }
 
-      &:hover .nav-icon {
+      &:hover .navIcon {
         color: white;
       }
     }
   }
 
-  .sidebar-bottom {
+  .sidebarBottom {
     margin-top: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    .nav-icon {
+    .navIcon {
       font-size: 22px;
       margin: 15px 0;
       cursor: pointer;
@@ -119,14 +119,14 @@ $chat-list-width: 280px;
       }
     }
 
-    .user-avatar {
+    .userAvatar {
       margin-top: 15px;
     }
   }
 }
 
 // Chat List Styles
-.chat-list {
+.chatList {
   width: $chat-list-width;
   background-color: white;
   border: 1px solid $border-color;
@@ -135,7 +135,7 @@ $chat-list-width: 280px;
   overflow-y: auto;
   border-top-left-radius: 30px;
 
-  .chat-list-header {
+  .chatListHeader {
     padding: 15px;
     border-bottom: 1px solid $border-color;
 
@@ -146,16 +146,16 @@ $chat-list-width: 280px;
     }
   }
 
-  .main-menu {
+  .mainMenu {
     padding: 0 15px;
 
-    .menu-item {
+    .menuItem {
       display: flex;
       align-items: center;
       padding: 12px 0;
       cursor: pointer;
 
-      .menu-icon {
+      .menuIcon {
         margin-right: 10px;
         color: #555;
       }
@@ -167,16 +167,16 @@ $chat-list-width: 280px;
     }
   }
 
-  .group-section {
+  .groupSection {
     margin-top: 10px;
 
-    .section-header {
+    .sectionHeader {
       display: flex;
       align-items: center;
       padding: 8px 15px;
       cursor: pointer;
 
-      .dropdown-icon {
+      .dropdownIcon {
         font-size: 12px;
         margin-right: 8px;
         color: #666;
@@ -190,8 +190,8 @@ $chat-list-width: 280px;
       }
     }
 
-    .group-list {
-      .group-item {
+    .groupList {
+      .groupItem {
         display: flex;
         align-items: center;
         padding: 8px 15px;
@@ -205,7 +205,7 @@ $chat-list-width: 280px;
           background-color: $secondary-color;
         }
 
-        .group-avatar {
+        .groupAvatar {
           width: 30px;
           height: 30px;
           border-radius: 50%;
@@ -222,7 +222,7 @@ $chat-list-width: 280px;
 }
 
 // Chat Content Area
-.chat-content {
+.chatContent {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -230,7 +230,7 @@ $chat-list-width: 280px;
 
   // Removed navbar from here as it's now at the top level
 
-  .chat-header {
+  .chatHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -238,8 +238,8 @@ $chat-list-width: 280px;
     background-color: white;
     border-bottom: 1px solid $border-color;
 
-    .header-left {
-      .chat-title {
+    .headerLeft {
+      .chatTitle {
         font-size: 16px;
         font-weight: 500;
         border-bottom: 1px solid gray;
@@ -251,53 +251,28 @@ $chat-list-width: 280px;
         }
       }
     }
-
-    // .header-right {
-    //   display: flex;
-    //   align-items: center;
-
-    //   .user-avatars {
-    //     display: flex;
-    //     flex-direction: row;
-    //     border:  2px solid red;
-
-    //     .user-avatar {
-    //       width: 30px;
-    //       height: 30px;
-    //       border-radius: 50%;
-    //       margin-left: 5px;
-    //     }
-    //   }
-
-    //   .control-icon {
-    //     font-size: 18px;
-    //     margin-left: 15px;
-    //     color: #555;
-    //     cursor: pointer;
-    //   }
-    // }
   }
-  .chat-controls {
+  .chatControls {
     display: flex;
   }
-  .user-avatars {
+  .userAvatars {
     display: flex;
     flex-direction: row;
 
-    .user-avatar {
+    .userAvatar {
       border-radius: 50%;
       margin-left: 5px;
     }
   }
 
-  .control-icon {
+  .controlIcon {
     font-size: 18px;
     margin-left: 15px;
     color: #555;
     cursor: pointer;
   }
 
-  .messages-container {
+  .messagesContainer {
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
@@ -306,7 +281,7 @@ $chat-list-width: 280px;
       display: flex;
       margin-bottom: 20px;
 
-      .sender-avatar {
+      .senderAvatar {
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -314,14 +289,14 @@ $chat-list-width: 280px;
         flex-shrink: 0;
       }
 
-      .message-content {
-        .sender-name {
+      .messageContent {
+        .senderName {
           font-weight: 500;
           margin-bottom: 5px;
           color: $text-color;
         }
 
-        .message-text {
+        .messageText {
           line-height: 1.5;
           color: $text-color;
         }
@@ -329,21 +304,21 @@ $chat-list-width: 280px;
     }
   }
 
-  .message-input-container {
+  .messageInputContainer {
     margin-top: auto;
     background-color: white;
     border-top: 1px solid $border-color;
 
-    .formatting-toolbar {
+    .formattingToolbar {
       display: flex;
       align-items: center;
       padding: 10px;
 
-      .toolbar-left {
+      .toolbarLeft {
         display: flex;
         align-items: center;
 
-        .toolbar-icon {
+        .toolbarIcon {
           font-size: 16px;
           margin-right: 15px;
           color: #555;
@@ -363,10 +338,10 @@ $chat-list-width: 280px;
       }
     }
 
-    .message-placeholder {
+    .messagePlaceholder {
       padding: 0 15px;
 
-      .placeholder-text {
+      .placeholderText {
         color: #999;
         margin: 0;
         padding: 0 0 10px 0;
@@ -374,18 +349,18 @@ $chat-list-width: 280px;
       }
     }
 
-    .action-toolbar {
+    .actionToolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 15px;
       background-color: $secondary-color;
 
-      .action-left {
+      .actionLeft {
         display: flex;
         align-items: center;
 
-        .action-icon {
+        .actionIcon {
           font-size: 16px;
           margin-right: 15px;
           color: #555;
@@ -404,8 +379,8 @@ $chat-list-width: 280px;
         }
       }
 
-      .action-right {
-        .send-icon {
+      .actionRight {
+        .sendIcon {
           font-size: 20px;
           color: $active-color;
           cursor: pointer;

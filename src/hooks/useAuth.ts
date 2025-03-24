@@ -21,7 +21,7 @@ const authApi = {
   },
   getMe: async () => {
     try {
-      const response = await httpClient.get('/auth/me', {
+      const response = await httpClient.get('/user/me', {
         withCredentials: true,
       })
       return response.data
