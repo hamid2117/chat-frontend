@@ -1,17 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import axios from 'axios'
+import httpClient from '../api/httpClient'
 import { useNavigate } from 'react-router-dom'
 import { LoginFormInputs } from '../types/auth.type'
 
 const authApi = {
   login: async (credentials: LoginFormInputs) => {
-    const response = await axios.post('/api/auth/login', credentials, {
+    const response = await httpClient.post('/api/auth/login', credentials, {
       withCredentials: true,
     })
     return response.data
   },
   logout: async () => {
-    const response = await axios.post(
+    const response = await httpClient.post(
       '/api/auth/logout',
       {},
       { withCredentials: true }
@@ -20,7 +20,7 @@ const authApi = {
   },
   getMe: async () => {
     try {
-      const response = await axios.get('/api/auth/me', {
+      const response = await httpClient.get('/api/auth/me', {
         withCredentials: true,
       })
       return response.data
@@ -46,7 +46,7 @@ export function useAuthStatus() {
     retry: false,
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
-
+  console.log('user', user)
   return {
     user,
     isAuthenticated: !!user,
