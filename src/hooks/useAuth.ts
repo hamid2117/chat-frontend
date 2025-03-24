@@ -38,7 +38,7 @@ export const AUTH_QUERY_KEY = ['auth-user']
 // Hook for checking auth status
 export function useAuthStatus() {
   const {
-    data: user,
+    data: { data: user } = {},
     isLoading,
     error,
   } = useQuery({

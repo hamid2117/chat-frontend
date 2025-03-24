@@ -30,3 +30,10 @@ export interface LoginModalProps {
   submitButtonText?: string
   showSignupOption?: boolean
 }
+
+export interface UserData {
+  name: string
+  email: string
+  profilePicture: string
+  isVerified: boolean
+}

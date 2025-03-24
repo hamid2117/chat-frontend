@@ -1,0 +1,391 @@
+@use 'sass:color';
+@import '../../../styles/globals.scss';
+
+$left-sidebar-width: 60px;
+$chat-list-width: 280px;
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  .topNavbar {
+    background-color: $primary-color;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    z-index: 10;
+
+    .searchContainer {
+      width: 100%;
+      max-width: 600px;
+
+      .searchInput {
+        width: 100%;
+        padding: 8px 15px;
+        border-radius: 4px;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        font-size: 14px;
+
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.7);
+        }
+      }
+    }
+  }
+
+  .mainContent {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    background-color: #0e3653;
+  }
+}
+
+// Left Sidebar Styles
+.leftSidebar {
+  width: $left-sidebar-width;
+  background-color: $primary-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  padding: 15px 0;
+
+  .logoContainer {
+    margin-bottom: 20px;
+  }
+
+  .userAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .navIcons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+
+    .navIconWrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 15px 0;
+      cursor: pointer;
+
+      .navIcon {
+        font-size: 22px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .navText {
+        font-size: 10px;
+        margin-top: 3px;
+      }
+
+      &.active .navIcon {
+        color: white;
+      }
+
+      &:hover .navIcon {
+        color: white;
+      }
+    }
+  }
+
+  .sidebarBottom {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .navIcon {
+      font-size: 22px;
+      margin: 15px 0;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.7);
+
+      &:hover {
+        color: white;
+      }
+    }
+
+    .userAvatar {
+      margin-top: 15px;
+    }
+  }
+}
+
+// Chat List Styles
+.chatList {
+  width: $chat-list-width;
+  background-color: white;
+  border: 1px solid $border-color;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border-top-left-radius: 30px;
+
+  .chatListHeader {
+    padding: 15px;
+    border-bottom: 1px solid $border-color;
+
+    h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+
+  .mainMenu {
+    padding: 0 15px;
+
+    .menuItem {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      cursor: pointer;
+
+      .menuIcon {
+        margin-right: 10px;
+        color: #555;
+      }
+
+      p {
+        margin: 0;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .groupSection {
+    margin-top: 10px;
+
+    .sectionHeader {
+      display: flex;
+      align-items: center;
+      padding: 8px 15px;
+      cursor: pointer;
+
+      .dropdownIcon {
+        font-size: 12px;
+        margin-right: 8px;
+        color: #666;
+      }
+
+      p {
+        margin: 0;
+        font-weight: 500;
+        color: #555;
+        font-size: 14px;
+      }
+    }
+
+    .groupList {
+      .groupItem {
+        display: flex;
+        align-items: center;
+        padding: 8px 15px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgba($secondary-color, 0.5);
+        }
+
+        &.active {
+          background-color: $secondary-color;
+        }
+
+        .groupAvatar {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+
+        p {
+          margin: 0;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+// Chat Content Area
+.chatContent {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: $secondary-color;
+
+  // Removed navbar from here as it's now at the top level
+
+  .chatHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: white;
+    border-bottom: 1px solid $border-color;
+
+    .headerLeft {
+      .chatTitle {
+        font-size: 16px;
+        font-weight: 500;
+        border-bottom: 1px solid gray;
+
+        .arrow {
+          margin-left: 8px;
+          font-size: 12px;
+          color: #999;
+        }
+      }
+    }
+  }
+  .chatControls {
+    display: flex;
+  }
+  .userAvatars {
+    display: flex;
+    flex-direction: row;
+
+    .userAvatar {
+      border-radius: 50%;
+      margin-left: 5px;
+    }
+  }
+
+  .controlIcon {
+    font-size: 18px;
+    margin-left: 15px;
+    color: #555;
+    cursor: pointer;
+  }
+
+  .messagesContainer {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+
+    .message {
+      display: flex;
+      margin-bottom: 20px;
+
+      .senderAvatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 12px;
+        flex-shrink: 0;
+      }
+
+      .messageContent {
+        .senderName {
+          font-weight: 500;
+          margin-bottom: 5px;
+          color: $text-color;
+        }
+
+        .messageText {
+          line-height: 1.5;
+          color: $text-color;
+        }
+      }
+    }
+  }
+
+  .messageInputContainer {
+    margin-top: auto;
+    background-color: white;
+    border-top: 1px solid $border-color;
+
+    .formattingToolbar {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+
+      .toolbarLeft {
+        display: flex;
+        align-items: center;
+
+        .toolbarIcon {
+          font-size: 16px;
+          margin-right: 15px;
+          color: #555;
+          cursor: pointer;
+
+          &:hover {
+            color: $active-color;
+          }
+        }
+
+        .divider {
+          height: 18px;
+          width: 1px;
+          background-color: $border-color;
+          margin: 0 10px;
+        }
+      }
+    }
+
+    .messagePlaceholder {
+      padding: 0 15px;
+
+      .placeholderText {
+        color: #999;
+        margin: 0;
+        padding: 0 0 10px 0;
+        font-size: 14px;
+      }
+    }
+
+    .actionToolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      background-color: $secondary-color;
+
+      .actionLeft {
+        display: flex;
+        align-items: center;
+
+        .actionIcon {
+          font-size: 16px;
+          margin-right: 15px;
+          color: #555;
+          cursor: pointer;
+
+          &:hover {
+            color: $active-color;
+          }
+        }
+
+        .divider {
+          height: 18px;
+          width: 1px;
+          background-color: $border-color;
+          margin: 0 10px;
+        }
+      }
+
+      .actionRight {
+        .sendIcon {
+          font-size: 20px;
+          color: $active-color;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
