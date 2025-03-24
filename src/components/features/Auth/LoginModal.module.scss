@@ -1,0 +1,192 @@
+@use 'sass:color';
+@import '../../../styles/globals.scss';
+
+$background-color: #f5f9fc;
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContainer {
+  background-color: #fff;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  animation: slideDown 0.3s ease-out;
+  padding: 0px 2rem;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // border-bottom: 1px solid $border-color;
+
+  h2 {
+    margin: 0;
+    color: $text-color;
+    font-family: 'Righteous', cursive;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    flex-grow: 1;
+  }
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #666;
+  }
+}
+
+.modalBody {
+  padding: 20px;
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+
+  &:last-of-type {
+    margin-bottom: 25px;
+  }
+}
+
+.inputField {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: 'Roboto', sans-serif;
+  color: $text-color;
+  transition: border 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+  }
+
+  &::placeholder {
+    color: #aaa;
+  }
+
+  &.inputError {
+    border-color: $error-color;
+  }
+}
+
+.errorMessage {
+  color: $error-color;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.forgotPassword {
+  text-align: right;
+  margin-top: 8px;
+
+  a {
+    color: #888;
+    font-size: 0.85rem;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+
+    &:hover {
+      color: $primary-color;
+      text-decoration: underline;
+    }
+  }
+}
+
+.loginButton {
+  width: 100%;
+  padding: 12px;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'Roboto', sans-serif;
+
+  &:hover:not(:disabled) {
+    background-color: color.adjust($primary-color, $lightness: -10%);
+  }
+
+  &:disabled {
+    background-color: color.adjust($primary-color, $lightness: 20%);
+    cursor: not-allowed;
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 25px 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid $border-color;
+  }
+
+  span {
+    margin: 0 15px;
+    color: #888;
+    font-size: 0.9rem;
+    font-family: 'Roboto', sans-serif;
+  }
+}
+
+.createAccountButton {
+  width: 100%;
+  padding: 12px;
+  background-color: white;
+  color: $primary-color;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'Roboto', sans-serif;
+
+  &:hover {
+    background-color: $background-color;
+  }
+}

@@ -1,7 +1,4 @@
-// ChatInterface.jsx
-import React, { useState } from 'react'
 import {
-  BsSearch,
   BsHouseDoor,
   BsBell,
   BsChatDots,
@@ -14,7 +11,6 @@ import {
   BsListOl,
   BsCode,
   BsEmojiSmile,
-  BsPaperclip,
   BsMic,
   BsCameraVideo,
   BsImage,
@@ -24,8 +20,6 @@ import {
 import { RiSendPlaneFill } from 'react-icons/ri'
 
 const Hero = () => {
-  const [message, setMessage] = useState('')
-
   // Sample data
   const groupChats = [
     { id: 1, name: 'Log Rocket Group', active: true },
