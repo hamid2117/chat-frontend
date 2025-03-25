@@ -1,37 +1,101 @@
+import { useState } from 'react'
 import { BsPerson, BsChatDots } from 'react-icons/bs'
 import styles from './ChatList.module.scss'
 import GroupSection from './GroupSection'
+import CreateGroupConversationModal from './GroupConversationModal'
+import CreateDirectConversationModal from './DirectConversationModal'
 
 interface ChatListProps {
-  groupChats: Array<{ id: number; name: string; active?: boolean }>
-  directMessages: Array<{ id: number; name: string }>
+  groupChats: Array<{ id: string; name: string; picture: string }>
+  directMessages: Array<{ id: string; name: string; picture: string }>
+  onConversationSelect: (id: string) => void
+  activeConversationId: string | null
 }
 
-const ChatList: React.FC<ChatListProps> = ({ groupChats, directMessages }) => {
+const ChatList: React.FC<ChatListProps> = ({
+  groupChats,
+  directMessages,
+  onConversationSelect,
+  activeConversationId,
+}) => {
+  const [isCreateGroupModalOpen, setIsCreateGroupModalOpen] = useState(false)
+  const [isCreateDirectModalOpen, setIsCreateDirectModalOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState<
+    'groups' | 'directMessages' | null
+  >(null)
+
+  const toggleSection = (section: 'groups' | 'directMessages') => {
+    if (activeSection === section) {
+      setActiveSection(null)
+    } else {
+      setActiveSection(section)
+    }
+  }
+
   return (
     <div className={styles.chatList}>
-      {/* Header */}
       <div className={styles.chatListHeader}>
         <h2>QLU Recruiting</h2>
       </div>
 
-      {/* Main Navigation */}
       <div className={styles.mainMenu}>
-        <div className={styles.menuItem}>
+        <div
+          className={`${styles.menuItem} ${
+            activeSection === 'groups' ? styles.active : ''
+          }`}
+          onClick={() => toggleSection('groups')}
+        >
           <BsPerson className={styles.menuIcon} />
           <p>Groups</p>
         </div>
-        <div className={styles.menuItem}>
+        <div
+          className={`${styles.menuItem} ${
+            activeSection === 'directMessages' ? styles.active : ''
+          }`}
+          onClick={() => toggleSection('directMessages')}
+        >
           <BsChatDots className={styles.menuIcon} />
           <p>Direct Messages</p>
         </div>
       </div>
 
-      {/* Groups section */}
-      <GroupSection title='Groups' items={groupChats} />
+      {(activeSection === null || activeSection === 'groups') && (
+        <GroupSection
+          title='Groups'
+          items={groupChats.map((chat) => ({
+            id: chat.id,
+            name: chat.name,
+            picture: chat.picture,
+            active: chat.id === activeConversationId,
+          }))}
+          onItemClick={onConversationSelect}
+          onCreateNew={() => setIsCreateGroupModalOpen(true)}
+        />
+      )}
 
-      {/* Direct Messages section */}
-      <GroupSection title='Direct Messages' items={directMessages} />
+      {(activeSection === null || activeSection === 'directMessages') && (
+        <GroupSection
+          title='Direct Messages'
+          items={directMessages.map((dm) => ({
+            id: dm.id,
+            name: dm.name,
+            picture: dm.picture,
+            active: dm.id === activeConversationId,
+          }))}
+          onItemClick={onConversationSelect}
+          onCreateNew={() => setIsCreateDirectModalOpen(true)}
+        />
+      )}
+
+      <CreateGroupConversationModal
+        isOpen={isCreateGroupModalOpen}
+        onClose={() => setIsCreateGroupModalOpen(false)}
+      />
+
+      <CreateDirectConversationModal
+        isOpen={isCreateDirectModalOpen}
+        onClose={() => setIsCreateDirectModalOpen(false)}
+      />
     </div>
   )
 }

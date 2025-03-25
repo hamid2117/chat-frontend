@@ -30,8 +30,11 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ title }) => {
             className={styles.userAvatar}
           />
         </div>
-        <BsMic className={styles.controlIcon} />
-        <BsCameraVideo className={styles.controlIcon} />
+        <BsMic className={styles.controlIcon} style={{ marginTop: '5px' }} />
+        <BsCameraVideo
+          className={styles.controlIcon}
+          style={{ marginTop: '5px' }}
+        />
       </div>
     </div>
   )

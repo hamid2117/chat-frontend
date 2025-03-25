@@ -4,23 +4,23 @@ import LeftSidebar from '../components/layout/LeftSidebar'
 import ChatList from '../components/features/Chat/ChatList'
 import ChatContent from '../components/features/Chat/ChatContent'
 import { useAuthStatus } from '../hooks/useAuth'
+import { useConversations } from '../hooks/useConversations'
+import InitialHomeImg from '../../public/icons/initial-home.svg'
+import { useState } from 'react'
 
 const HomePage = () => {
   const { user } = useAuthStatus()
-  // Sample data
-  const groupChats = [
-    { id: 1, name: 'Log Rocket Group', active: true },
-    { id: 2, name: 'Random' },
-    { id: 3, name: 'General' },
-    { id: 4, name: 'HR' },
-  ]
+  const { groupChats, directMessages, isLoading } = useConversations()
+  const [activeConversationId, setActiveConversationId] = useState<
+    string | null
+  >(null)
 
-  const directMessages = [
-    { id: 1, name: 'Ashir Manzoor' },
-    { id: 2, name: 'Fahad Jalal' },
-    { id: 3, name: 'Yashua Parvez' },
-    { id: 4, name: 'Aneeq Akber' },
-  ]
+  // Find the active conversation (either from state or default to first one)
+  const activeConversation =
+    groupChats.find((g) => g.id === activeConversationId) ||
+    directMessages.find((d) => d.id === activeConversationId) ||
+    (groupChats.length > 0 ? groupChats[0] : null) ||
+    (directMessages.length > 0 ? directMessages[0] : null)
 
   const chatMessages = [
     {
@@ -42,17 +42,56 @@ const HomePage = () => {
     },
   ]
 
+  const handleConversationSelect = (id: string) => {
+    setActiveConversationId(id)
+    // Here you would also fetch messages for this conversation
+  }
+
   return (
     <div className={styles.chatContainer}>
       <Navbar />
 
       <div className={styles.mainContent}>
         <LeftSidebar user={user} />
-        <ChatList groupChats={groupChats} directMessages={directMessages} />
-        <ChatContent
-          chatMessages={chatMessages}
-          activeChat='Log Rocket Group'
-        />
+
+        {isLoading ? (
+          <div className={styles.loading}>Loading conversations...</div>
+        ) : (
+          <>
+            <ChatList
+              groupChats={groupChats}
+              directMessages={directMessages}
+              onConversationSelect={handleConversationSelect}
+              activeConversationId={activeConversationId}
+            />
+
+            {activeConversation ? (
+              <ChatContent
+                chatMessages={chatMessages}
+                activeChat={activeConversation.name}
+              />
+            ) : (
+              <div className={styles.emptyState}>
+                <img src={InitialHomeImg} alt='Welcome to Pulse' />
+                <h2>pulse</h2>
+                <h3>Connect, Communicate, Create</h3>
+                <h3>
+                  Your journey with <span>pulse</span> begins here!
+                </h3>
+                <button
+                  className={styles.getStartedButton}
+                  onClick={() =>
+                    setActiveConversationId(
+                      groupChats[0]?.id || directMessages[0]?.id
+                    )
+                  }
+                >
+                  Start Chatting
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   )
