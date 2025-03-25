@@ -3,6 +3,7 @@
 
 $left-sidebar-width: 60px;
 $chat-list-width: 280px;
+$icon-hover-scale: 1.1;
 
 .chatContainer {
   display: flex;
@@ -20,344 +21,216 @@ $chat-list-width: 280px;
   }
 }
 
-// Left Sidebar Styles
-.leftSidebar {
-  width: $left-sidebar-width;
-  background-color: $primary-color;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
-  padding: 15px 0;
-
-  .logoContainer {
-    margin-bottom: 20px;
-  }
-
-  .userAvatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .navIcons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-grow: 1;
-
-    .navIconWrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 15px 0;
-      cursor: pointer;
-
-      .navIcon {
-        font-size: 22px;
-        color: rgba(255, 255, 255, 0.7);
-      }
-
-      .navText {
-        font-size: 10px;
-        margin-top: 3px;
-      }
-
-      &.active .navIcon {
-        color: white;
-      }
-
-      &:hover .navIcon {
-        color: white;
-      }
-    }
-  }
-
-  .sidebarBottom {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .navIcon {
-      font-size: 22px;
-      margin: 15px 0;
-      cursor: pointer;
-      color: rgba(255, 255, 255, 0.7);
-
-      &:hover {
-        color: white;
-      }
-    }
-
-    .userAvatar {
-      margin-top: 15px;
-    }
-  }
-}
-
-// Chat List Styles
-.chatList {
-  width: $chat-list-width;
+.messageInputContainer {
+  margin-top: auto;
   background-color: white;
-  border: 1px solid $border-color;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  border-top-left-radius: 30px;
+  border-top: 1px solid $border-color;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 8px 8px 0 0;
 
-  .chatListHeader {
-    padding: 15px;
-    border-bottom: 1px solid $border-color;
+  textarea.messageInput {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 4px;
+    resize: none;
+    font-size: 15px;
+    line-height: 1.5;
+    transition: all 0.2s ease;
+    background-color: rgba(245, 247, 250, 0.8);
 
-    h2 {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 600;
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($active-color, 0.2);
+    }
+
+    &::placeholder {
+      color: #8a9aa9;
     }
   }
 
-  .mainMenu {
-    padding: 0 15px;
+  .formattingToolbar {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eaedf0;
 
-    .menuItem {
+    .toolbarLeft {
       display: flex;
       align-items: center;
-      padding: 12px 0;
-      cursor: pointer;
 
-      .menuIcon {
-        margin-right: 10px;
-        color: #555;
-      }
-
-      p {
-        margin: 0;
-        font-weight: 500;
-      }
-    }
-  }
-
-  .groupSection {
-    margin-top: 10px;
-
-    .sectionHeader {
-      display: flex;
-      align-items: center;
-      padding: 8px 15px;
-      cursor: pointer;
-
-      .dropdownIcon {
-        font-size: 12px;
-        margin-right: 8px;
-        color: #666;
-      }
-
-      p {
-        margin: 0;
-        font-weight: 500;
-        color: #555;
-        font-size: 14px;
-      }
-    }
-
-    .groupList {
-      .groupItem {
-        display: flex;
-        align-items: center;
-        padding: 8px 15px;
+      .toolbarIcon {
+        font-size: 30px;
+        margin-right: 15px;
+        color: #5b6b7c;
         cursor: pointer;
+        padding: 6px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
 
         &:hover {
-          background-color: rgba($secondary-color, 0.5);
+          color: $active-color;
+          background-color: rgba($active-color, 0.08);
+          transform: scale($icon-hover-scale);
         }
 
-        &.active {
-          background-color: $secondary-color;
+        &:active {
+          transform: scale(0.95);
         }
+      }
 
-        .groupAvatar {
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          margin-right: 10px;
-        }
-
-        p {
-          margin: 0;
-          font-size: 14px;
-        }
+      .divider {
+        height: 22px;
+        width: 1px;
+        background-color: #dde4eb;
+        margin: 0 10px;
+        opacity: 0.8;
       }
     }
   }
-}
 
-// Chat Content Area
-.chatContent {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: $secondary-color;
-
-  // Removed navbar from here as it's now at the top level
-
-  .chatHeader {
+  .actionToolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    background-color: white;
-    border-bottom: 1px solid $border-color;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eaedf0;
 
-    .headerLeft {
-      .chatTitle {
-        font-size: 16px;
-        font-weight: 500;
-        border-bottom: 1px solid gray;
+    .actionLeft {
+      display: flex;
+      align-items: center;
 
-        .arrow {
-          margin-left: 8px;
-          font-size: 12px;
-          color: #999;
+      .actionIcon {
+        font-size: 28px;
+        margin-right: 15px;
+        color: #5b6b7c;
+        cursor: pointer;
+        padding: 7px;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: $active-color;
+          background-color: rgba($active-color, 0.08);
+          transform: scale($icon-hover-scale);
+        }
+
+        &:active {
+          transform: scale(0.95);
         }
       }
+
+      .divider {
+        height: 22px;
+        width: 1px;
+        background-color: #dde4eb;
+        margin: 0 10px;
+        opacity: 0.7;
+      }
     }
-  }
-  .chatControls {
-    display: flex;
-  }
-  .userAvatars {
-    display: flex;
-    flex-direction: row;
 
-    .userAvatar {
-      border-radius: 50%;
-      margin-left: 5px;
-    }
-  }
-
-  .controlIcon {
-    font-size: 18px;
-    margin-left: 15px;
-    color: #555;
-    cursor: pointer;
-  }
-
-  .messagesContainer {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-
-    .message {
-      display: flex;
-      margin-bottom: 20px;
-
-      .senderAvatar {
+    .actionRight {
+      .sendButton {
+        background-color: $active-color;
+        border: none;
+        border-radius: 50%;
         width: 40px;
         height: 40px;
-        border-radius: 50%;
-        margin-right: 12px;
-        flex-shrink: 0;
-      }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba($active-color, 0.3);
 
-      .messageContent {
-        .senderName {
-          font-weight: 500;
-          margin-bottom: 5px;
-          color: $text-color;
+        &:hover {
+          background-color: darken($active-color, 5%);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba($active-color, 0.4);
         }
 
-        .messageText {
-          line-height: 1.5;
-          color: $text-color;
+        &:active {
+          transform: translateY(0);
+          box-shadow: 0 2px 3px rgba($active-color, 0.3);
+        }
+
+        &:disabled {
+          background-color: #cfd7df;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: none;
+        }
+
+        .sendIcon {
+          font-size: 20px;
+          color: white;
         }
       }
     }
   }
+}
 
-  .messageInputContainer {
-    margin-top: auto;
-    background-color: white;
-    border-top: 1px solid $border-color;
+// Animation for send button
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba($active-color, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba($active-color, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba($active-color, 0);
+  }
+}
 
-    .formattingToolbar {
-      display: flex;
-      align-items: center;
-      padding: 10px;
+.messageInput:focus + .actionToolbar .sendButton:not(:disabled) {
+  animation: pulse 1.5s infinite;
+}
 
-      .toolbarLeft {
-        display: flex;
-        align-items: center;
+.iconWrapper {
+  position: relative;
+  display: inline-block;
 
-        .toolbarIcon {
-          font-size: 16px;
-          margin-right: 15px;
-          color: #555;
-          cursor: pointer;
+  .tooltip {
+    visibility: hidden;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 10;
+  }
 
-          &:hover {
-            color: $active-color;
-          }
-        }
+  &:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+}
 
-        .divider {
-          height: 18px;
-          width: 1px;
-          background-color: $border-color;
-          margin: 0 10px;
-        }
-      }
-    }
+// Add send button animation
+.sendButton {
+  &.sending {
+    animation: send-pulse 0.5s ease;
+  }
+}
 
-    .messagePlaceholder {
-      padding: 0 15px;
-
-      .placeholderText {
-        color: #999;
-        margin: 0;
-        padding: 0 0 10px 0;
-        font-size: 14px;
-      }
-    }
-
-    .actionToolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 15px;
-      background-color: $secondary-color;
-
-      .actionLeft {
-        display: flex;
-        align-items: center;
-
-        .actionIcon {
-          font-size: 16px;
-          margin-right: 15px;
-          color: #555;
-          cursor: pointer;
-
-          &:hover {
-            color: $active-color;
-          }
-        }
-
-        .divider {
-          height: 18px;
-          width: 1px;
-          background-color: $border-color;
-          margin: 0 10px;
-        }
-      }
-
-      .actionRight {
-        .sendIcon {
-          font-size: 20px;
-          color: $active-color;
-          cursor: pointer;
-        }
-      }
-    }
+@keyframes send-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
   }
 }

@@ -33,10 +33,9 @@ const HomePage = () => {
     directMessages.find((d) => d.id === activeConversationId) ||
     (groupChats.length > 0 ? groupChats[0] : null) ||
     (directMessages.length > 0 ? directMessages[0] : null)
-  console.log('messages', messages)
+
   const handleConversationSelect = (id: string) => {
     setActiveConversationId(id)
-    // Fetch messages for the selected conversation
     getMessages(id)
   }
 
@@ -65,7 +64,7 @@ const HomePage = () => {
               activeConversationId={activeConversationId}
             />
 
-            {activeConversation ? (
+            {activeConversationId && activeConversation ? (
               <ChatContent
                 messages={messages}
                 typingUsers={typingUsers}
@@ -87,16 +86,6 @@ const HomePage = () => {
                 <h3>
                   Your journey with <span>pulse</span> begins here!
                 </h3>
-                <button
-                  className={styles.getStartedButton}
-                  onClick={() =>
-                    setActiveConversationId(
-                      groupChats[0]?.id || directMessages[0]?.id
-                    )
-                  }
-                >
-                  Start Chatting
-                </button>
               </div>
             )}
           </>

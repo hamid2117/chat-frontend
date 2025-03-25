@@ -217,10 +217,8 @@ export function useMessages(): UseMessagesReturn {
       }
 
       try {
-        setLoading(true)
         setError(null)
 
-        // Prepare message data
         const messageData = {
           conversationId,
           contentType: 'TEXT',
@@ -229,16 +227,16 @@ export function useMessages(): UseMessagesReturn {
 
         const { data } = await httpClient.post('/message', messageData)
         const newMessage = data?.data || null
-        //setMessages((prev) => [...prev, newMessage])
-        //return newMessage
+
+        return newMessage
       } catch (err) {
+        setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId))
+
         const errorMessage =
           err instanceof Error ? err.message : 'Failed to create message'
         setError(errorMessage)
         toast.error(errorMessage)
         return null
-      } finally {
-        setLoading(false)
       }
     },
     [userId]

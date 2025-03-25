@@ -160,19 +160,23 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
         <div className={styles.actionToolbar}>
           <div className={styles.actionLeft}>
-            <BsPlusLg className={styles.actionIcon} />
-            <BsEmojiSmile className={styles.actionIcon} />
+            <BsPlusLg className={styles.actionIcon} title='Add attachments' />
+            <BsEmojiSmile className={styles.actionIcon} title='Add emoji' />
             <div className={styles.divider}></div>
-            <BsCameraVideo className={styles.actionIcon} />
-            <BsMic className={styles.actionIcon} />
+            <BsCameraVideo
+              className={styles.actionIcon}
+              title='Start video call'
+            />
+            <BsMic className={styles.actionIcon} title='Record audio' />
             <div className={styles.divider}></div>
-            <BsImage className={styles.actionIcon} />
+            <BsImage className={styles.actionIcon} title='Add image' />
           </div>
           <div className={styles.actionRight}>
             <button
               type='submit'
               className={styles.sendButton}
               disabled={!message.trim()}
+              title='Send message'
             >
               <RiSendPlaneFill className={styles.sendIcon} />
             </button>
