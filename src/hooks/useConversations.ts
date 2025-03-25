@@ -81,8 +81,8 @@ export function useConversations() {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: CONVERSATIONS_QUERY_KEY,
     queryFn: fetchConversations,
-    enabled: !!user, // Only fetch if user is authenticated
-    staleTime: 1000 * 60, // 1 minute
+    enabled: !!user,
+    staleTime: 1000 * 60, // 1 min
   })
 
   const processedConversations =

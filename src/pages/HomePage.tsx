@@ -5,6 +5,7 @@ import ChatList from '../components/features/Chat/ChatList'
 import ChatContent from '../components/features/Chat/ChatContent'
 import { useAuthStatus } from '../hooks/useAuth'
 import { useConversations } from '../hooks/useConversations'
+import { useMessages } from '../hooks/useMessages'
 import InitialHomeImg from '../../public/icons/initial-home.svg'
 import { useState } from 'react'
 
@@ -15,36 +16,35 @@ const HomePage = () => {
     string | null
   >(null)
 
-  // Find the active conversation (either from state or default to first one)
+  // Use the messages hook
+  const {
+    messages,
+    loading: messagesLoading,
+    getMessages,
+    createMessage,
+    updateMessage,
+    deleteMessage,
+    setTypingStatus,
+    typingUsers,
+  } = useMessages()
+
   const activeConversation =
     groupChats.find((g) => g.id === activeConversationId) ||
     directMessages.find((d) => d.id === activeConversationId) ||
     (groupChats.length > 0 ? groupChats[0] : null) ||
     (directMessages.length > 0 ? directMessages[0] : null)
-
-  const chatMessages = [
-    {
-      id: 1,
-      sender: 'Yashua Parvez',
-      content:
-        'We really need to consolidate and move to a single search bar. Its imperative for us to go to a single search bar experience where everything just shows in a single search bar experience.',
-    },
-    {
-      id: 2,
-      sender: 'Muhammad Salman',
-      content:
-        'The Roxanna log rocket explains why we really need to consolidate and move to a single search bar. Its imperative for us to go to a single search bar experience where everything just shows in a single search bar experience. Good Work! @Imantariq',
-    },
-    {
-      id: 3,
-      sender: 'Aiman Tariq',
-      content: 'Are you following up on these tickets being created?',
-    },
-  ]
-
+  console.log('messages', messages)
   const handleConversationSelect = (id: string) => {
     setActiveConversationId(id)
-    // Here you would also fetch messages for this conversation
+    // Fetch messages for the selected conversation
+    getMessages(id)
+  }
+
+  // Handler to send a new message
+  const handleSendMessage = async (content: string) => {
+    if (activeConversationId) {
+      await createMessage(activeConversationId, content)
+    }
   }
 
   return (
@@ -67,8 +67,17 @@ const HomePage = () => {
 
             {activeConversation ? (
               <ChatContent
-                chatMessages={chatMessages}
+                messages={messages}
+                typingUsers={typingUsers}
                 activeChat={activeConversation.name}
+                onSendMessage={handleSendMessage}
+                onUpdateMessage={updateMessage}
+                onDeleteMessage={deleteMessage}
+                onTyping={(isTyping) =>
+                  activeConversationId &&
+                  setTypingStatus(activeConversationId, isTyping)
+                }
+                isLoading={messagesLoading}
               />
             ) : (
               <div className={styles.emptyState}>
