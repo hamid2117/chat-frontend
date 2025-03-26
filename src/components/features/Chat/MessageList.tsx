@@ -1,6 +1,10 @@
 import { useEffect, useRef } from 'react'
 import styles from './MessageList.module.scss'
 import { BsChatDots } from 'react-icons/bs'
+import remarkGfm from 'remark-gfm'
+import remarkEmoji from 'remark-emoji'
+import Markdown from 'react-markdown'
+
 interface Attachment {
   id: string
   messageId: string
@@ -106,7 +110,14 @@ const MessageList: React.FC<MessageListProps> = ({
                     This message was deleted
                   </em>
                 ) : (
-                  msg.textContent
+                  <Markdown
+                    remarkPlugins={[
+                      remarkGfm,
+                      [remarkEmoji, { emoticon: true }],
+                    ]}
+                  >
+                    {msg.textContent}
+                  </Markdown>
                 )}
               </div>
 

@@ -18,6 +18,7 @@ import {
 } from 'react-icons/bs'
 import { RiSendPlaneFill } from 'react-icons/ri'
 import styles from './MessageInput.module.scss'
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024
 const MAX_ATTACHMENTS = 5
@@ -53,10 +54,48 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const [cursorPosition, setCursorPosition] = useState<number | null>(null)
   const [attachments, setAttachments] = useState<Attachment[]>([])
   const [fileError, setFileError] = useState<string | null>(null)
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const typingTimeoutRef = useRef<any | null>(null)
+  const emojiPickerRef = useRef<HTMLDivElement>(null)
+  const emojiButtonRef = useRef<HTMLDivElement>(null)
+
+  const handleEmojiClick = (emojiData: EmojiClickData) => {
+    if (!inputRef.current) return
+
+    const start = inputRef.current.selectionStart
+    const end = inputRef.current.selectionEnd
+
+    const newMessage =
+      message.substring(0, start) + emojiData.emoji + message.substring(end)
+
+    setMessage(newMessage)
+
+    // Set cursor position after the inserted emoji
+    const newCursorPosition = start + emojiData.emoji.length
+    setCursorPosition(newCursorPosition)
+  }
+
+  // Close emoji picker when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        emojiPickerRef.current &&
+        emojiButtonRef.current &&
+        !emojiPickerRef.current.contains(event.target as Node) &&
+        !emojiButtonRef.current.contains(event.target as Node)
+      ) {
+        setShowEmojiPicker(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   useEffect(() => {
     if (message && !isTyping) {
@@ -361,8 +400,18 @@ const MessageInput: React.FC<MessageInputProps> = ({
               }}
             />
 
-            {/* Other action buttons */}
-            <BsEmojiSmile className={styles.actionIcon} title='Add emoji' />
+            <div ref={emojiButtonRef} className={styles.emojiPickerContainer}>
+              <BsEmojiSmile
+                className={styles.actionIcon}
+                title='Add emoji'
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              />
+              {showEmojiPicker && (
+                <div ref={emojiPickerRef} className={styles.emojiPickerWrapper}>
+                  <EmojiPicker onEmojiClick={handleEmojiClick} />
+                </div>
+              )}
+            </div>
             <div className={styles.divider}></div>
             <BsCameraVideo
               className={styles.actionIcon}

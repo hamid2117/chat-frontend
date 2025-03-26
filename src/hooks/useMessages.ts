@@ -60,7 +60,7 @@ export function useMessages(): UseMessagesReturn {
   const userId = 'current-user-id'
 
   useEffect(() => {
-    const socket = io('http://localhost:3000')
+    const socket = io('http://localhost:3000', { withCredentials: true })
     socketRef.current = socket
 
     socket.on('connect_error', (err) => {

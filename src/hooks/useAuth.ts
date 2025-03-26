@@ -26,16 +26,13 @@ const authApi = {
       })
       return response.data
     } catch (error) {
-      // If unauthorized or any other error, return null
       return null
     }
   },
 }
 
-// Auth query key
 export const AUTH_QUERY_KEY = ['auth-user']
 
-// Hook for checking auth status
 export function useAuthStatus() {
   const { data, isLoading, error } = useQuery({
     queryKey: AUTH_QUERY_KEY,
@@ -65,18 +62,15 @@ export function useLogin() {
   return useMutation({
     mutationFn: authApi.login,
     onSuccess: (userData) => {
-      // Show success toast
       toast.success('Login successful! Welcome back.', {
         position: 'top-right',
         autoClose: 3000,
       })
 
-      // Update auth cache
       queryClient.setQueryData(AUTH_QUERY_KEY, userData)
       navigate('/home')
     },
     onError: (error: any) => {
-      // Extract error message and show toast
       const errorMessage =
         error?.response?.data?.message ||
         error?.message ||
@@ -92,7 +86,6 @@ export function useLogin() {
   })
 }
 
-// Hook for logout
 export function useLogout() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -100,20 +93,16 @@ export function useLogout() {
   return useMutation({
     mutationFn: authApi.logout,
     onSuccess: () => {
-      // Show success toast
       toast.success('You have been logged out successfully.', {
         position: 'top-right',
         autoClose: 3000,
       })
 
-      // Clear auth cache
       queryClient.setQueryData(AUTH_QUERY_KEY, null)
-      // Invalidate queries that might contain user-specific data
       queryClient.invalidateQueries()
       navigate('/')
     },
     onError: (error: any) => {
-      // Show error toast
       toast.error('Logout failed. Please try again.', {
         position: 'top-right',
         autoClose: 5000,

@@ -137,6 +137,7 @@ export function useConversations() {
       }
     })
     .filter(Boolean)
+  console.log('directMessages', directMessages)
   return {
     conversations: processedConversations,
     groupChats,
