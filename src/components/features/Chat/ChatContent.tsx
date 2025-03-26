@@ -2,6 +2,7 @@ import styles from './ChatContent.module.scss'
 import ChatHeader from './ChatHeader'
 import MessageList from './MessageList'
 import MessageInput from './MessageInput'
+import type { Conversation } from '../../../hooks/useConversations'
 
 interface Message {
   id: number
@@ -11,11 +12,9 @@ interface Message {
   conversationId: string
   isDeleted?: boolean
 }
-
 interface ChatContentProps {
   messages: Message[]
   typingUsers: string[]
-  activeChat: string
   isLoading: boolean
   onSendMessage: (content: string) => Promise<void>
   onUpdateMessage: (
@@ -24,21 +23,22 @@ interface ChatContentProps {
   ) => Promise<Message | null>
   onDeleteMessage: (messageId: number) => Promise<boolean>
   onTyping: (isTyping: boolean) => void
+  activeConversation: Conversation
 }
 
 const ChatContent: React.FC<ChatContentProps> = ({
   messages,
   typingUsers,
-  activeChat,
   isLoading,
   onSendMessage,
   onUpdateMessage,
   onDeleteMessage,
   onTyping,
+  activeConversation,
 }) => {
   return (
     <div className={styles.chatContent}>
-      <ChatHeader title={activeChat} />
+      <ChatHeader activeConversation={activeConversation} />
 
       {isLoading ? (
         <div className={styles.loadingMessages}>Loading messages...</div>

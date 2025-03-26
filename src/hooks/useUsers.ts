@@ -18,15 +18,22 @@ export type ConversationType = 'direct' | 'group'
 
 export const USERS_QUERY_KEY = 'users'
 
-const fetchUsers = async (type: ConversationType): Promise<UsersResponse> => {
-  const response = await httpClient.get(`/user/conversation?type=${type}`)
+const fetchUsers = async (
+  type: ConversationType,
+  conversationId?: string
+): Promise<UsersResponse> => {
+  const response = await httpClient.get(
+    `/user/conversation?type=${type}${
+      conversationId ? `&conversationId=${conversationId}` : ''
+    }`
+  )
   return response.data
 }
 
-export function useUsers(type: ConversationType) {
+export function useUsers(type: ConversationType, conversationId?: string) {
   return useQuery({
     queryKey: [USERS_QUERY_KEY, type],
-    queryFn: () => fetchUsers(type),
+    queryFn: () => fetchUsers(type, conversationId),
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 }

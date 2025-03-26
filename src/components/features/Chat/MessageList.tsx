@@ -1,5 +1,6 @@
-import { ReactNode, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import styles from './MessageList.module.scss'
+import { BsChatDots } from 'react-icons/bs'
 interface Attachment {
   id: string
   messageId: string
@@ -57,67 +58,84 @@ const MessageList: React.FC<MessageListProps> = ({
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    console.log('messages ', messages)
   }, [messages])
 
   return (
     <div className={styles.messagesContainer}>
-      {messages.map((msg) => (
-        <div
-          key={msg.id}
-          className={`${styles.message} ${msg.isDeleted ? styles.deleted : ''}`}
-        >
-          <img
-            src={msg.sender.profilePicture || 'https://placehold.co/40x40'}
-            alt={msg.sender.displayName}
-            className={styles.senderAvatar}
-          />
-          <div className={styles.messageContent}>
-            <div className={styles.messageHeader}>
-              <span className={styles.senderName}>
-                {msg.sender.displayName}
-              </span>
-              <span className={styles.timestamp}>
-                {new Date(msg.sentAt).toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </span>
-              {msg.isEdited && <span className={styles.edited}>(edited)</span>}
-            </div>
+      {messages.length === 0 ? (
+        <div className={styles.emptyMessages}>
+          <div className={styles.emptyMessagesIcon}>
+            <BsChatDots />
+          </div>
+          <h3>No messages yet</h3>
+          <p>Be the first to send a message in this conversation!</p>
+        </div>
+      ) : (
+        messages.map((msg) => (
+          <div
+            key={msg.id}
+            className={`${styles.message} ${
+              msg.isDeleted ? styles.deleted : ''
+            }`}
+          >
+            <img
+              src={msg.sender.profilePicture || 'https://placehold.co/40x40'}
+              alt={msg.sender.displayName}
+              className={styles.senderAvatar}
+            />
+            <div className={styles.messageContent}>
+              <div className={styles.messageHeader}>
+                <span className={styles.senderName}>
+                  {msg.sender.displayName}
+                </span>
+                <span className={styles.timestamp}>
+                  {new Date(msg.sentAt).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </span>
+                {msg.isEdited && (
+                  <span className={styles.edited}>(edited)</span>
+                )}
+              </div>
 
-            <div className={styles.messageText}>
-              {msg.isDeleted ? (
-                <em className={styles.deletedText}>This message was deleted</em>
-              ) : (
-                msg.textContent
+              <div className={styles.messageText}>
+                {msg.isDeleted ? (
+                  <em className={styles.deletedText}>
+                    This message was deleted
+                  </em>
+                ) : (
+                  msg.textContent
+                )}
+              </div>
+
+              {msg.attachments && msg.attachments.length > 0 && (
+                <div className={styles.attachments}>
+                  {msg.attachments.map((attachment) => (
+                    <div key={attachment.id} className={styles.attachment}>
+                      {attachment.fileType.startsWith('image/') ? (
+                        <img
+                          src={attachment.fileUrl}
+                          alt={attachment.fileName}
+                          className={styles.attachmentImage}
+                        />
+                      ) : (
+                        <a
+                          href={attachment.fileUrl}
+                          download={attachment.fileName}
+                        >
+                          {attachment.fileName}
+                        </a>
+                      )}
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
-
-            {msg.attachments && msg.attachments.length > 0 && (
-              <div className={styles.attachments}>
-                {msg.attachments.map((attachment) => (
-                  <div key={attachment.id} className={styles.attachment}>
-                    {attachment.fileType.startsWith('image/') ? (
-                      <img
-                        src={attachment.fileUrl}
-                        alt={attachment.fileName}
-                        className={styles.attachmentImage}
-                      />
-                    ) : (
-                      <a
-                        href={attachment.fileUrl}
-                        download={attachment.fileName}
-                      >
-                        {attachment.fileName}
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
-        </div>
-      ))}
+        ))
+      )}
 
       {typingUsers.length > 0 && (
         <div className={styles.typingIndicator}>

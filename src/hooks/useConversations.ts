@@ -7,6 +7,8 @@ export interface User {
   id: string
   displayName: string
   profilePicture: string
+  profilePictureUrl: string
+  email: string
 }
 
 export interface Participant {
@@ -26,7 +28,7 @@ export interface Conversation {
   name: string
   picture: string
   description?: string
-  participants: Participant[]
+  participants: User[]
 }
 
 interface ConversationsResponse {
@@ -82,12 +84,11 @@ export function useConversations() {
     queryKey: CONVERSATIONS_QUERY_KEY,
     queryFn: fetchConversations,
     enabled: !!user,
-    staleTime: 1000 * 60, // 1 min
+    staleTime: 1000 * 60,
   })
 
   const processedConversations =
     data?.data?.rows?.map((conversation) => {
-      // If it's a direct message, find the other participant
       if (conversation.type === 'DIRECT' && user) {
         const otherParticipant = conversation.participants.find(
           (p) => p.userId !== user.id
@@ -104,28 +105,38 @@ export function useConversations() {
       return conversation
     }) || []
 
-  // Separate group chats and direct messages
   const groupChats = processedConversations
     .filter((conv) => conv.type === 'GROUP')
     .map((conv) => ({
       id: conv.id,
       name: conv.name,
       picture: conv.picture,
+      type: conv.type,
       participants: conv.participants,
       description: conv.description,
       updatedAt: conv.updatedAt,
+      createdBy: conv.createdBy,
     }))
 
   const directMessages = processedConversations
     .filter((conv) => conv.type === 'DIRECT')
-    .map((conv) => ({
-      id: conv.id,
-      name: conv.name,
-      picture: conv.picture,
-      userId: conv.participants.find((p) => p.userId !== user?.id)?.userId,
-      updatedAt: conv.updatedAt,
-    }))
+    .map((conv) => {
+      const participant = conv.participants.find((p) => p.userId !== user.id)
+      if (!participant || !participant.user) {
+        return null
+      }
+      const otherParticipant = participant.user
 
+      return {
+        id: conv.id,
+        name: otherParticipant.displayName,
+        picture: otherParticipant.profilePicture,
+        type: conv.type,
+        userId: participant.userId,
+        updatedAt: conv.updatedAt,
+      }
+    })
+    .filter(Boolean)
   return {
     conversations: processedConversations,
     groupChats,

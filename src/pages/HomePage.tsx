@@ -16,7 +16,6 @@ const HomePage = () => {
     string | null
   >(null)
 
-  // Use the messages hook
   const {
     messages,
     loading: messagesLoading,
@@ -39,13 +38,12 @@ const HomePage = () => {
     getMessages(id)
   }
 
-  // Handler to send a new message
-  const handleSendMessage = async (content: string) => {
+  const handleSendMessage = async (content: string, attachments?: File[]) => {
     if (activeConversationId) {
-      await createMessage(activeConversationId, content)
+      await createMessage(activeConversationId, content, attachments)
     }
   }
-
+  console.log('activeConversation', activeConversation)
   return (
     <div className={styles.chatContainer}>
       <Navbar />
@@ -68,7 +66,9 @@ const HomePage = () => {
               <ChatContent
                 messages={messages}
                 typingUsers={typingUsers}
+                activeConversation={activeConversation}
                 activeChat={activeConversation.name}
+                activeConversationId={activeConversationId}
                 onSendMessage={handleSendMessage}
                 onUpdateMessage={updateMessage}
                 onDeleteMessage={deleteMessage}

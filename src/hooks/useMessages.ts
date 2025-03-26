@@ -36,7 +36,8 @@ interface UseMessagesReturn {
   loadMoreMessages: () => Promise<void>
   createMessage: (
     conversationId: string,
-    content: string
+    content: string,
+    attachments?: File[]
   ) => Promise<Message | null>
   updateMessage: (messageId: number, content: string) => Promise<Message | null>
   deleteMessage: (messageId: number) => Promise<boolean>
@@ -54,7 +55,7 @@ export function useMessages(): UseMessagesReturn {
   const [typingUsers, setTypingUsers] = useState<string[]>([])
   const [hasMore, setHasMore] = useState<boolean>(false)
   const [nextCursor, setNextCursor] = useState<string | null>(null)
-  const [pageSize] = useState<number>(20)
+  const [pageSize] = useState<number>(50)
   const socketRef = useRef<Socket | null>(null)
   const userId = 'current-user-id'
 
@@ -204,43 +205,64 @@ export function useMessages(): UseMessagesReturn {
     }
   }, [currentConversationId, hasMore, nextCursor, loading, pageSize])
 
-  const createMessage = useCallback(
-    async (
-      conversationId: string,
-      content: string
-    ): Promise<Message | null> => {
-      if (!content.trim()) {
-        const errorMessage = 'Message content cannot be empty'
-        setError(errorMessage)
-        toast.error(errorMessage)
-        return null
-      }
+  const createMessage = async (
+    conversationId: string,
+    content: string,
+    attachments?: File[]
+  ): Promise<Message | null> => {
+    if (!content.trim() && (!attachments || attachments.length === 0)) {
+      const errorMessage = 'Message content cannot be empty'
+      setError(errorMessage)
+      toast.error(errorMessage)
+      return null
+    }
 
-      try {
-        setError(null)
+    try {
+      setError(null)
+      let response
 
-        const messageData = {
+      if (!attachments || attachments.length === 0) {
+        response = await httpClient.post('/message', {
           conversationId,
           contentType: 'TEXT',
           textContent: content,
-        }
+        })
+      } else if (attachments[0].type.startsWith('image/')) {
+        const formData = new FormData()
+        formData.append('conversationId', conversationId)
+        formData.append('contentType', 'IMAGE')
+        formData.append('textContent', content)
+        formData.append('image', attachments[0])
 
-        const { data } = await httpClient.post('/message', messageData)
-        const newMessage = data?.data || null
+        response = await httpClient.post('/message/image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+      } else {
+        const formData = new FormData()
+        formData.append('conversationId', conversationId)
+        formData.append('contentType', 'FILE')
+        formData.append('textContent', content)
+        formData.append('file', attachments[0])
 
-        return newMessage
-      } catch (err) {
-        setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId))
-
-        const errorMessage =
-          err instanceof Error ? err.message : 'Failed to create message'
-        setError(errorMessage)
-        toast.error(errorMessage)
-        return null
+        response = await httpClient.post('/message/file', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
       }
-    },
-    [userId]
-  )
+
+      const newMessage = response.data?.data || null
+      return newMessage
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to create message'
+      setError(errorMessage)
+      toast.error(errorMessage)
+      return null
+    }
+  }
 
   const updateMessage = useCallback(
     async (messageId: number, content: string): Promise<Message | null> => {
