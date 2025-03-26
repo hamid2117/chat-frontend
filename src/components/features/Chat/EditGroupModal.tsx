@@ -5,6 +5,7 @@ import styles from './EditGroupModal.module.scss'
 import httpClient from '../../../api/httpClient'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import type { Participant } from '../../../hooks/useConversations'
+import { useUsers, User } from '../../../hooks/useUsers'
 
 interface EditGroupModalProps {
   isOpen: boolean
@@ -37,12 +38,17 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
     initialData.groupPicture || null
   )
   const [searchQuery, setSearchQuery] = useState('')
-  const [searchResults, setSearchResults] = useState<Participant[]>([])
-  const [isSearching, setIsSearching] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
+
+  // Use the useUsers hook with conversation ID to exclude existing members
+  const { data: usersData, isLoading: isLoadingUsers } = useUsers(
+    'group',
+    conversationId
+  )
+  const users = usersData?.data || []
 
   const {
     register,
@@ -62,6 +68,17 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
 
   const participants = watch('participants')
 
+  const filteredUsers = searchQuery
+    ? users.filter(
+        (user) =>
+          (user.displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (user.email &&
+              user.email.toLowerCase().includes(searchQuery.toLowerCase()))) &&
+          !participants.some((p) => p.userId === user.id)
+      )
+    : []
+
+  // Click outside handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -83,6 +100,7 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
     }
   }, [isOpen, onClose])
 
+  // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
       reset({
@@ -121,42 +139,28 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
     setError(null)
   }
 
-  const handleSearchParticipants = async (query: string) => {
-    if (!query.trim()) {
-      setSearchResults([])
+  // Convert user to participant format
+  const handleAddParticipant = (user: User) => {
+    // Create a participant object from the user
+    const newParticipant: Participant = {
+      userId: user.id,
+      user: {
+        id: user.id,
+        displayName: user.displayName,
+        profilePicture: user.profilePicture,
+        profilePictureUrl: user.profilePictureUrl,
+        email: user.email,
+      },
+    }
+
+    if (participants.some((p) => p.userId === user.id)) {
       return
     }
 
-    setIsSearching(true)
-
-    try {
-      const { data } = await httpClient.get(
-        `/users/search?query=${encodeURIComponent(query)}`
-      )
-
-      const filteredResults = (data.data || []).filter(
-        (user) => !participants.some((p) => p.userId === user.id)
-      )
-
-      setSearchResults(filteredResults)
-    } catch (err) {
-      console.error('Error searching users:', err)
-      setSearchResults([])
-    } finally {
-      setIsSearching(false)
-    }
-  }
-
-  const handleAddParticipant = (participant: Participant) => {
-    if (participants.some((p) => p.userId === participant.userId)) {
-      return
-    }
-
-    setValue('participants', [...participants, participant], {
+    setValue('participants', [...participants, newParticipant], {
       shouldValidate: true,
     })
     setSearchQuery('')
-    setSearchResults([])
   }
 
   const handleRemoveParticipant = (participantId: string) => {
@@ -304,10 +308,7 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
                     placeholder='Search users...'
                     className={styles.searchInput}
                     value={searchQuery}
-                    onChange={(e) => {
-                      setSearchQuery(e.target.value)
-                      handleSearchParticipants(e.target.value)
-                    }}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
 
@@ -318,14 +319,14 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
                       <div key={user.userId} className={styles.selectedUser}>
                         <img
                           src={
-                            user.user.profilePictureUrl ||
-                            user.user.profilePicture ||
+                            user.user?.profilePictureUrl ||
+                            user.user?.profilePicture ||
                             'https://via.placeholder.com/30'
                           }
-                          alt={user.user.displayName}
+                          alt={user.user?.displayName}
                           className={styles.userAvatar}
                         />
-                        <span>{user.user.displayName} </span>
+                        <span>{user.user?.displayName} </span>
                         <button
                           type='button'
                           className={styles.removeUserButton}
@@ -341,33 +342,33 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
                 {/* Search results */}
                 {searchQuery && (
                   <div className={styles.userDropdown}>
-                    {isSearching ? (
+                    {isLoadingUsers ? (
                       <div className={styles.loadingUsers}>
-                        Searching users...
+                        Loading users...
                       </div>
-                    ) : searchResults.length > 0 ? (
-                      searchResults.map((user) => (
+                    ) : filteredUsers.length > 0 ? (
+                      filteredUsers.map((user) => (
                         <div
-                          key={user.userId}
+                          key={user.id}
                           className={styles.userItem}
                           onClick={() => handleAddParticipant(user)}
                         >
                           <img
                             src={
-                              user.user.profilePictureUrl ||
-                              user.user.profilePicture ||
+                              user.profilePictureUrl ||
+                              user.profilePicture ||
                               'https://via.placeholder.com/30'
                             }
-                            alt={user.user.displayName}
+                            alt={user.displayName}
                             className={styles.userAvatar}
                           />
                           <div className={styles.userInfo}>
                             <div className={styles.userName}>
-                              {user.user.displayName}
+                              {user.displayName}
                             </div>
-                            {user.user.email && (
+                            {user.email && (
                               <div className={styles.userEmail}>
-                                {user.user.email}
+                                {user.email}
                               </div>
                             )}
                           </div>
