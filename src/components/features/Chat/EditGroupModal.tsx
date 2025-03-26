@@ -227,7 +227,11 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
 
         {error && <div className={styles.errorMessage}>{error}</div>}
 
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          className={styles.form}
+        >
           <div className={styles.formGroup}>
             <div className={styles.groupPictureContainer}>
               <div

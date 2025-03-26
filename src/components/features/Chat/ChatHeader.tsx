@@ -38,7 +38,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ activeConversation }) => {
         <div className={styles.chatControls}>
           <div className={styles.userAvatars}>
             {activeConversation.participants
-              .slice(0, 3)
+              ?.slice(0, 3)
               .map((participant, index) => (
                 <img
                   key={participant.id}
@@ -50,7 +50,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ activeConversation }) => {
                   style={{ zIndex: 3 - index }}
                 />
               ))}
-            {activeConversation.participants.length > 3 && (
+            {activeConversation.participants?.length > 3 && (
               <div className={styles.moreAvatars}>
                 +{activeConversation.participants.length - 3}
               </div>
