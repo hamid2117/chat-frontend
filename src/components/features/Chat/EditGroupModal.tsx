@@ -325,7 +325,7 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
                           src={
                             user.user?.profilePictureUrl ||
                             user.user?.profilePicture ||
-                            'https://via.placeholder.com/30'
+                            'https://placehold.co/30x30'
                           }
                           alt={user.user?.displayName}
                           className={styles.userAvatar}

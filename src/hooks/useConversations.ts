@@ -30,7 +30,7 @@ export interface Conversation {
   name: string
   picture: string
   description?: string
-  participants: User[]
+  participants: Participant[]
   unreadCount: number
 }
 

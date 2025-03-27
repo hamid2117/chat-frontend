@@ -2,8 +2,11 @@ import { useState } from 'react'
 import { BsMic, BsCameraVideo, BsThreeDotsVertical } from 'react-icons/bs'
 import styles from './ChatHeader.module.scss'
 import EditGroupModal from './EditGroupModal'
-import type { Conversation } from '../../../hooks/useConversations'
-import { useQueryClient } from '@tanstack/react-query' // Add this import
+import {
+  CONVERSATIONS_QUERY_KEY,
+  type Conversation,
+} from '../../../hooks/useConversations'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface ChatHeaderProps {
   activeConversation: Conversation
@@ -12,18 +15,18 @@ interface ChatHeaderProps {
 const ChatHeader: React.FC<ChatHeaderProps> = ({ activeConversation }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const queryClient = useQueryClient() // Add QueryClient for refetching
+  const queryClient = useQueryClient()
 
   const handleEditClick = async () => {
     setIsEditModalOpen(true)
     setMenuOpen(false)
   }
 
-  // Add a function to handle successful updates
   const handleUpdateSuccess = () => {
-    // Invalidate conversation queries to refetch data
-    queryClient.invalidateQueries(['conversations'])
-    queryClient.invalidateQueries(['conversation', activeConversation.id])
+    queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY })
+    queryClient.invalidateQueries({
+      queryKey: ['conversation', activeConversation.id],
+    })
   }
 
   return (
@@ -41,11 +44,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ activeConversation }) => {
               ?.slice(0, 3)
               .map((participant, index) => (
                 <img
-                  key={participant.id}
+                  key={participant.userId}
                   src={
-                    participant.profilePicture || 'https://placehold.co/30x30'
+                    participant.user.profilePicture ||
+                    'https://placehold.co/30x30'
                   }
-                  alt={participant.displayName}
+                  alt={participant.user.displayName}
                   className={styles.userAvatar}
                   style={{ zIndex: 3 - index }}
                 />
@@ -88,7 +92,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ activeConversation }) => {
             groupPicture: activeConversation.picture,
             participants: activeConversation.participants || [],
           }}
-          onUpdate={handleUpdateSuccess} // Pass the update handler
+          onUpdate={handleUpdateSuccess}
         />
       )}
     </>
