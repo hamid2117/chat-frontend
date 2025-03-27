@@ -119,7 +119,7 @@ export function useSignup() {
       return response.data
     },
     onSuccess: () => {
-      toast.success('Account created successfully! Please log in.', {
+      toast.success('Account created successfully! Please Verify your email.', {
         position: 'top-right',
         autoClose: 3000,
       })
