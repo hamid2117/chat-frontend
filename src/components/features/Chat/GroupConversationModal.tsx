@@ -143,8 +143,7 @@ const CreateGroupConversationModal: React.FC<
                     <div key={user.id} className={styles.selectedUser}>
                       <img
                         src={
-                          user.profilePicture ||
-                          'https://via.placeholder.com/30'
+                          user.profilePicture || 'https://placehold.co/30x30'
                         }
                         alt={user.displayName}
                         className={styles.userAvatar}
@@ -176,8 +175,7 @@ const CreateGroupConversationModal: React.FC<
                       >
                         <img
                           src={
-                            user.profilePicture ||
-                            'https://via.placeholder.com/30'
+                            user.profilePicture || 'https://placehold.co/30x30'
                           }
                           alt={user.displayName}
                           className={styles.userAvatar}
