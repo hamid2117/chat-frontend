@@ -20,8 +20,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
-      console.log('Login form submitted with:', data)
-
       if (onLoginSuccess) {
         onLoginSuccess(data)
       }

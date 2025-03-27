@@ -45,7 +45,6 @@ const HomePage = () => {
       await createMessage(activeConversationId, content, attachments)
     }
   }
-  console.log('activeConversation', activeConversation)
   return (
     <div className={styles.chatContainer}>
       <Navbar />
