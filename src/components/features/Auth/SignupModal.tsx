@@ -49,11 +49,11 @@ const SignupModal: React.FC<SignupModalProps> = ({
         </div>
 
         <div className={styles.modalBody}>
-          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate autoComplete='off'>
             <div className={styles.inputGroup}>
               <input
                 type='text'
-                placeholder='Email Address / Phone Number'
+                placeholder='Email Address '
                 className={`${styles.inputField} ${
                   errors.email ? styles.inputError : ''
                 }`}

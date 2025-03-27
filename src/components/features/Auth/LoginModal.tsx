@@ -20,10 +20,8 @@ const LoginModal: React.FC<LoginModalProps> = ({
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
-      // Here you would typically make an API call for authentication
       console.log('Login form submitted with:', data)
 
-      // If login is successful
       if (onLoginSuccess) {
         onLoginSuccess(data)
       }
@@ -32,14 +30,13 @@ const LoginModal: React.FC<LoginModalProps> = ({
     }
   }
 
-  // Don't render anything if the modal is not open
   if (!isOpen) return null
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div
         className={styles.modalContainer}
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking modal content
+        onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.modalHeader}>
           <h2>{title}</h2>
@@ -57,7 +54,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
             <div className={styles.inputGroup}>
               <input
                 type='text'
-                placeholder='Email Address / Phone Number'
+                placeholder='Email Address '
                 className={`${styles.inputField} ${
                   errors.email ? styles.inputError : ''
                 }`}

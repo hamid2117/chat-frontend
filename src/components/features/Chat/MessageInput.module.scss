@@ -409,3 +409,56 @@ $icon-hover-scale: 1.1;
 .emojiPickerWrapper.hiding {
   animation: fadeOutDown 0.2s ease forwards;
 }
+.markdownEditorContainer {
+  margin-bottom: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+
+  :global(.rc-md-editor .editor-container) {
+    min-height: 100px;
+    max-height: 300px;
+  }
+
+  :global(.rc-md-editor .editor-container .sec-md .input) {
+    min-height: 80px !important;
+    overflow-y: auto;
+  }
+
+  :global(.rc-md-editor .editor-container .sec-html) {
+    min-height: 80px !important;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  :global(.rc-md-editor) {
+    border: 1px solid #e0e5e9;
+    border-radius: 8px;
+    font-family: inherit;
+  }
+
+  :global(.rc-md-navigation) {
+    background-color: #f5f7f9;
+    border-bottom: 1px solid #e0e5e9;
+  }
+
+  :global(.editor-container) {
+    padding: 8px !important;
+  }
+
+  :global(.section-container) {
+    border-radius: 0 0 8px 8px;
+  }
+
+  :global(.custom-html-style) {
+    padding: 8px 16px;
+  }
+
+  :global(.rc-md-editor) {
+    height: auto !important;
+  }
+
+  :global(.rc-md-editor .editor-container .sec-md .input) {
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 8px !important;
+  }
+}

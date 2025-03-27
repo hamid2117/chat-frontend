@@ -74,7 +74,7 @@ const LeftSidebar: React.FC<{ user: UserData }> = ({ user }) => {
         <BsPlusLg className={styles.navIcon} />
         <div className={styles.avatarContainer} ref={avatarRef}>
           <img
-            src={user.profilePicture}
+            src={user.profilePicture || 'https://placehold.co/30x30'}
             alt='User'
             className={styles.userAvatar}
             onClick={handleAvatarClick}

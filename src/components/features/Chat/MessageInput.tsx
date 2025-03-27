@@ -1,24 +1,23 @@
 import { useState, useEffect, useRef } from 'react'
 import {
-  BsTypeBold,
-  BsTypeItalic,
-  BsLink45Deg,
-  BsListUl,
-  BsListOl,
-  BsCode,
-  BsEmojiSmile,
   BsMic,
   BsCameraVideo,
   BsImage,
   BsPlusLg,
   BsX,
-  BsFileEarmarkText,
+  BsEmojiSmile,
   BsFileEarmarkImage,
   BsFileEarmarkPdf,
+  BsFileEarmarkText,
 } from 'react-icons/bs'
 import { RiSendPlaneFill } from 'react-icons/ri'
 import styles from './MessageInput.module.scss'
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
+import MarkdownEditor from 'react-markdown-editor-lite'
+import 'react-markdown-editor-lite/lib/index.css'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import remarkEmoji from 'remark-emoji'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024
 const MAX_ATTACHMENTS = 5
@@ -51,51 +50,21 @@ const MessageInput: React.FC<MessageInputProps> = ({
 }) => {
   const [message, setMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
-  const [cursorPosition, setCursorPosition] = useState<number | null>(null)
   const [attachments, setAttachments] = useState<Attachment[]>([])
   const [fileError, setFileError] = useState<string | null>(null)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 
-  const inputRef = useRef<HTMLTextAreaElement>(null)
+  const mdEditorRef = useRef<any>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const typingTimeoutRef = useRef<any | null>(null)
   const emojiPickerRef = useRef<HTMLDivElement>(null)
   const emojiButtonRef = useRef<HTMLDivElement>(null)
 
   const handleEmojiClick = (emojiData: EmojiClickData) => {
-    if (!inputRef.current) return
+    if (!mdEditorRef.current) return
 
-    const start = inputRef.current.selectionStart
-    const end = inputRef.current.selectionEnd
-
-    const newMessage =
-      message.substring(0, start) + emojiData.emoji + message.substring(end)
-
-    setMessage(newMessage)
-
-    // Set cursor position after the inserted emoji
-    const newCursorPosition = start + emojiData.emoji.length
-    setCursorPosition(newCursorPosition)
+    mdEditorRef.current.insertText(emojiData.emoji)
   }
-
-  // Close emoji picker when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        emojiPickerRef.current &&
-        emojiButtonRef.current &&
-        !emojiPickerRef.current.contains(event.target as Node) &&
-        !emojiButtonRef.current.contains(event.target as Node)
-      ) {
-        setShowEmojiPicker(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
 
   useEffect(() => {
     if (message && !isTyping) {
@@ -127,17 +96,14 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
     if (!files || files.length === 0) return
 
-    // Check if adding new files would exceed the limit
     if (attachments.length + files.length > MAX_ATTACHMENTS) {
       setFileError(`You can only attach up to ${MAX_ATTACHMENTS} files`)
       return
     }
 
-    // Process each file
     const newAttachments: Attachment[] = []
 
     Array.from(files).forEach((file) => {
-      // Check file type
       if (!SUPPORTED_FILE_TYPES.includes(file.type)) {
         setFileError(
           'Unsupported file type. Supported types: images, PDF, DOC, DOCX, TXT'
@@ -145,13 +111,11 @@ const MessageInput: React.FC<MessageInputProps> = ({
         return
       }
 
-      // Check file size
       if (file.size > MAX_FILE_SIZE) {
         setFileError('File size exceeds 10MB limit')
         return
       }
 
-      // Create a preview URL for images
       let previewUrl
       if (file.type.startsWith('image/')) {
         previewUrl = URL.createObjectURL(file)
@@ -170,7 +134,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
       setAttachments((prev) => [...prev, ...newAttachments])
     }
 
-    // Reset the file input
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
@@ -187,6 +150,24 @@ const MessageInput: React.FC<MessageInputProps> = ({
     })
   }
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        emojiPickerRef.current &&
+        emojiButtonRef.current &&
+        !emojiPickerRef.current.contains(event.target as Node) &&
+        !emojiButtonRef.current.contains(event.target as Node)
+      ) {
+        setShowEmojiPicker(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -200,6 +181,9 @@ const MessageInput: React.FC<MessageInputProps> = ({
       await onSendMessage(message, files)
 
       setMessage('')
+      if (mdEditorRef.current) {
+        mdEditorRef.current.setText('')
+      }
 
       attachments.forEach((att) => {
         if (att.previewUrl) {
@@ -215,57 +199,33 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
   }
 
-  const formatText = (formatType: string) => {
-    if (!inputRef.current) return
+  const handleEditorChange = ({ text }: { text: string }) => {
+    setMessage(text)
+  }
 
-    const input = inputRef.current
-    const start = input.selectionStart
-    const end = input.selectionEnd
-    const selectedText = message.substring(start, end)
-
-    let formattedText = ''
-    let newCursorPos = 0
-
-    switch (formatType) {
-      case 'bold':
-        formattedText = `**${selectedText}**`
-        newCursorPos = start + 2
-        break
-      case 'italic':
-        formattedText = `*${selectedText}*`
-        newCursorPos = start + 1
-        break
-      case 'link':
-        formattedText = `[${selectedText}](url)`
-        newCursorPos = end + 3
-        break
-      case 'code':
-        formattedText = `\`${selectedText}\``
-        newCursorPos = start + 1
-        break
-      default:
-        return
-    }
-
-    const newMessage =
-      message.substring(0, start) + formattedText + message.substring(end)
-    setMessage(newMessage)
-
-    // Set focus and cursor position after state update
-    setCursorPosition(
-      selectedText
-        ? end + formattedText.length - selectedText.length
-        : newCursorPos
+  const renderHTML = (text: string) => {
+    return (
+      <ReactMarkdown remarkPlugins={[remarkGfm, remarkEmoji]}>
+        {text}
+      </ReactMarkdown>
     )
   }
 
-  useEffect(() => {
-    if (cursorPosition !== null && inputRef.current) {
-      inputRef.current.focus()
-      inputRef.current.setSelectionRange(cursorPosition, cursorPosition)
-      setCursorPosition(null)
-    }
-  }, [cursorPosition, message])
+  const mdEditorToolbar = {
+    img: false,
+    link: true,
+    code: true,
+    preview: true,
+    expand: false,
+    undo: true,
+    redo: true,
+    save: false,
+    subfield: true,
+  }
+
+  const openFileSelector = () => {
+    fileInputRef.current?.click()
+  }
 
   const getFileIcon = (fileType: string) => {
     if (fileType.startsWith('image/')) return <BsFileEarmarkImage />
@@ -273,38 +233,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
     return <BsFileEarmarkText />
   }
 
-  const openFileSelector = () => {
-    fileInputRef.current?.click()
-  }
-
   return (
     <div className={styles.messageInputContainer}>
-      <div className={styles.formattingToolbar}>
-        <div className={styles.toolbarLeft}>
-          <BsTypeBold
-            className={styles.toolbarIcon}
-            onClick={() => formatText('bold')}
-          />
-          <BsTypeItalic
-            className={styles.toolbarIcon}
-            onClick={() => formatText('italic')}
-          />
-          <BsLink45Deg
-            className={styles.toolbarIcon}
-            onClick={() => formatText('link')}
-          />
-          <div className={styles.divider}></div>
-          <BsListUl className={styles.toolbarIcon} />
-          <BsListOl className={styles.toolbarIcon} />
-          <div className={styles.divider}></div>
-          <BsCode
-            className={styles.toolbarIcon}
-            onClick={() => formatText('code')}
-          />
-        </div>
-      </div>
-
-      {/* Display file error if any */}
       {fileError && (
         <div className={styles.fileError}>
           <BsX
@@ -315,7 +245,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
         </div>
       )}
 
-      {/* Display attachment previews */}
       {attachments.length > 0 && (
         <div className={styles.attachmentPreviews}>
           {attachments.map((attachment) => (
@@ -353,18 +282,39 @@ const MessageInput: React.FC<MessageInputProps> = ({
       )}
 
       <form onSubmit={handleSubmit}>
-        <textarea
-          ref={inputRef}
-          placeholder='Type a message...'
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className={styles.messageInput}
-          rows={3}
-        />
+        <div className={styles.markdownEditorContainer}>
+          <MarkdownEditor
+            ref={mdEditorRef}
+            value={message}
+            style={{ height: '200px' }}
+            onChange={handleEditorChange}
+            renderHTML={renderHTML}
+            placeholder='Type a message...'
+            config={{
+              view: { menu: true, md: true, html: false },
+              canView: {
+                menu: true,
+                md: true,
+                html: false,
+                fullScreen: false,
+                hideMenu: true,
+              },
+              toolbar: mdEditorToolbar,
+            }}
+            plugins={[
+              'font-bold',
+              'font-italic',
+              'list-unordered',
+              'list-ordered',
+              'block-quote',
+              'block-code-inline',
+              'block-code-block',
+            ]}
+          />
+        </div>
 
         <div className={styles.actionToolbar}>
           <div className={styles.actionLeft}>
-            {/* File input (hidden) */}
             <input
               type='file'
               ref={fileInputRef}
@@ -374,14 +324,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
               accept={SUPPORTED_FILE_TYPES.join(',')}
             />
 
-            {/* Attachment button */}
             <BsPlusLg
               className={styles.actionIcon}
               title='Add attachments'
               onClick={openFileSelector}
             />
 
-            {/* Direct image upload button */}
             <BsImage
               className={styles.actionIcon}
               title='Add image'
@@ -389,7 +337,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
                 if (fileInputRef.current) {
                   fileInputRef.current.accept = 'image/*'
                   fileInputRef.current.click()
-                  // Reset accept after click
                   setTimeout(() => {
                     if (fileInputRef.current) {
                       fileInputRef.current.accept =
