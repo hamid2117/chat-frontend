@@ -131,16 +131,14 @@ export function useConversations() {
         let formattedConversation = { ...conversation, unreadCount: 1 }
 
         if (conversation.type === 'DIRECT' && user) {
-          const otherParticipant = conversation.participants.find(
-            (p: any) => p.userId !== user.id
-          )?.user
+          const otherParticipant = conversation.participants[0].user
 
           if (otherParticipant) {
             formattedConversation = {
               ...formattedConversation,
               name: otherParticipant.displayName,
               picture: otherParticipant.profilePicture,
-              userId: otherParticipant.userId,
+              userId: otherParticipant.id,
             }
           }
         }
