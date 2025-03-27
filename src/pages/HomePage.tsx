@@ -11,7 +11,8 @@ import { useState } from 'react'
 
 const HomePage = () => {
   const { user } = useAuthStatus()
-  const { groupChats, directMessages, isLoading } = useConversations()
+  const { groupChats, directMessages, isLoading, markConversationAsRead } =
+    useConversations()
   const [activeConversationId, setActiveConversationId] = useState<
     string | null
   >(null)
@@ -36,6 +37,7 @@ const HomePage = () => {
   const handleConversationSelect = (id: string) => {
     setActiveConversationId(id)
     getMessages(id)
+    markConversationAsRead(id)
   }
 
   const handleSendMessage = async (content: string, attachments?: File[]) => {

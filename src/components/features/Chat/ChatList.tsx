@@ -6,8 +6,18 @@ import CreateGroupConversationModal from './GroupConversationModal'
 import CreateDirectConversationModal from './DirectConversationModal'
 
 interface ChatListProps {
-  groupChats: Array<{ id: string; name: string; picture: string }>
-  directMessages: Array<{ id: string; name: string; picture: string }>
+  groupChats: Array<{
+    id: string
+    name: string
+    picture: string
+    unreadCount?: number
+  }>
+  directMessages: Array<{
+    id: string
+    name: string
+    picture: string
+    unreadCount?: number
+  }>
   onConversationSelect: (id: string) => void
   activeConversationId: string | null
 }
@@ -67,6 +77,7 @@ const ChatList: React.FC<ChatListProps> = ({
             name: chat.name,
             picture: chat.picture,
             active: chat.id === activeConversationId,
+            unreadCount: chat.unreadCount,
           }))}
           onItemClick={onConversationSelect}
           onCreateNew={() => setIsCreateGroupModalOpen(true)}
@@ -81,6 +92,7 @@ const ChatList: React.FC<ChatListProps> = ({
             name: dm.name,
             picture: dm.picture,
             active: dm.id === activeConversationId,
+            unreadCount: dm.unreadCount,
           }))}
           onItemClick={onConversationSelect}
           onCreateNew={() => setIsCreateDirectModalOpen(true)}

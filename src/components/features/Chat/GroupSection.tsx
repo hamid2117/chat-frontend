@@ -8,9 +8,10 @@ interface GroupSectionProps {
     name: string
     picture: string
     active?: boolean
+    unreadCount?: number
   }>
   onItemClick: (id: string) => void
-  onCreateNew?: () => void // New prop for handling the create new action
+  onCreateNew?: () => void
 }
 
 const GroupSection: React.FC<GroupSectionProps> = ({
@@ -49,7 +50,11 @@ const GroupSection: React.FC<GroupSectionProps> = ({
               alt={item.name}
               className={styles.groupAvatar}
             />
-            <p>{item.name}</p>
+            <p className={styles.groupName}>{item.name}</p>
+
+            {item.unreadCount && item.unreadCount > 0 ? (
+              <span className={styles.unreadBadge}>{item.unreadCount}</span>
+            ) : null}
           </div>
         ))}
       </div>

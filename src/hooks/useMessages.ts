@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import io, { Socket } from 'socket.io-client'
 import httpClient from '../api/httpClient'
 import { toast } from 'react-toastify'
+import { useAuthStatus } from './useAuth'
 
 interface Message {
   id: number
@@ -46,6 +47,7 @@ interface UseMessagesReturn {
 }
 
 export function useMessages(): UseMessagesReturn {
+  const { user } = useAuthStatus()
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
@@ -57,10 +59,10 @@ export function useMessages(): UseMessagesReturn {
   const [nextCursor, setNextCursor] = useState<string | null>(null)
   const [pageSize] = useState<number>(50)
   const socketRef = useRef<Socket | null>(null)
-  const userId = 'current-user-id'
+  const userId = user.id
 
   useEffect(() => {
-    const socket = io('http://localhost:3000', { withCredentials: true })
+    const socket = io('http://localhost:3000')
     socketRef.current = socket
 
     socket.on('connect_error', (err) => {
@@ -79,7 +81,10 @@ export function useMessages(): UseMessagesReturn {
     const socket = socketRef.current
     if (!socket || !currentConversationId) return
 
-    socket.emit('join_conversation', currentConversationId)
+    socket.emit('conversation_open', {
+      conversationId: currentConversationId,
+      userId,
+    })
 
     const handleNewMessage = (newMessage: Message) => {
       if (newMessage.conversationId === currentConversationId) {
@@ -132,7 +137,6 @@ export function useMessages(): UseMessagesReturn {
     socket.on('message_updated', handleMessageUpdate)
     socket.on('message_deleted', handleMessageDelete)
     socket.on('typing_status', handleTypingStatus)
-
     return () => {
       socket.off('new_message', handleNewMessage)
       socket.off('message_updated', handleMessageUpdate)

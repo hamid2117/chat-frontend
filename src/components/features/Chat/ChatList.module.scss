@@ -403,3 +403,31 @@ $chat-list-width: 280px;
     }
   }
 }
+
+.groupName {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 8px; /* Add some space for the badge */
+}
+
+.unreadBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #5c6bc0; /* Use your app's primary color */
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 6px;
+  margin-left: auto;
+}
+
+/* If your items are active with a different background */
+.active .unreadBadge {
+  background-color: #3949ab; /* Slightly darker when active */
+}
