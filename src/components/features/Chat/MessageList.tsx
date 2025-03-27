@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './MessageList.module.scss'
 import { BsChatDots } from 'react-icons/bs'
 import remarkGfm from 'remark-gfm'
@@ -60,9 +60,30 @@ const MessageList: React.FC<MessageListProps> = ({
 }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
+  const [isFirstRender, setIsFirstRender] = useState(true)
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    if (isFirstRender && messages.length > 0) {
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'auto' })
+        setIsFirstRender(false)
+      }, 1)
+    }
+  }, [isFirstRender, messages.length])
+
+  useEffect(() => {
+    if (!isFirstRender && messagesEndRef.current) {
+      const container = messagesEndRef.current.parentElement
+      if (container) {
+        const { scrollHeight, scrollTop, clientHeight } = container
+        const isNearBottom = scrollHeight - scrollTop - clientHeight < 100
+
+        if (isNearBottom) {
+          messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    }
+  }, [messages, isFirstRender])
 
   return (
     <div className={styles.messagesContainer}>
