@@ -1,35 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import httpClient from '../api/httpClient'
 import { useNavigate } from 'react-router-dom'
-import { LoginFormInputs } from '../types/auth.type'
 import { toast } from 'react-toastify'
-
-const authApi = {
-  login: async (credentials: LoginFormInputs) => {
-    const response = await httpClient.post('/auth/login', credentials, {
-      withCredentials: true,
-    })
-    return response.data
-  },
-  logout: async () => {
-    const response = await httpClient.post(
-      '/auth/logout',
-      {},
-      { withCredentials: true }
-    )
-    return response.data
-  },
-  getMe: async () => {
-    try {
-      const response = await httpClient.get('/user/me', {
-        withCredentials: true,
-      })
-      return response.data
-    } catch (error) {
-      return null
-    }
-  },
-}
+import authApi from '../services/auth'
 
 export const AUTH_QUERY_KEY = ['auth-user']
 
