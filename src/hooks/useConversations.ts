@@ -1,10 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import httpClient from '../api/httpClient'
 import { useAuthStatus } from './useAuth'
 import { toast } from 'react-toastify'
 import { useCallback, useEffect, useRef } from 'react'
 import { io, Socket } from 'socket.io-client'
-import conversationApi from '../services/conversation'
 
 export interface User {
   id: string
@@ -252,67 +251,4 @@ export function useConversations() {
     refetch,
     markConversationAsRead,
   }
-}
-
-export function useCreateDirectConversation() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: conversationApi.createDirect,
-    onSuccess: () => {
-      // Invalidate conversations query to refetch the list
-      queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY })
-      toast.success('Direct conversation created')
-    },
-    onError: (error: any) => {
-      toast.error(
-        error?.response?.data?.message || 'Failed to create direct conversation'
-      )
-    },
-  })
-}
-
-export function useCreateGroupConversation() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: conversationApi.createGroup,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY })
-      toast.success('Group conversation created')
-    },
-    onError: (error: any) => {
-      toast.error(
-        error?.response?.data?.message || 'Failed to create group conversation'
-      )
-    },
-  })
-}
-
-export function useUpdateGroupConversation() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: ({
-      id,
-      data,
-    }: {
-      id: string
-      data: Partial<
-        CreateGroupConversationInput & {
-          description?: string
-          picture?: string
-        }
-      >
-    }) => {
-      return conversationApi.updateGroup(id, data)
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: CONVERSATIONS_QUERY_KEY })
-      toast.success('Group updated successfully')
-    },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || 'Failed to update group')
-    },
-  })
 }

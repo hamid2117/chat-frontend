@@ -1,8 +1,36 @@
-import httpClient from '../api/httpClient'
+import { LoginFormInputs } from '../types/auth.type'
 import {
   CreateDirectConversationInput,
   CreateGroupConversationInput,
 } from '../hooks/useConversations'
+import httpClient from '../api/httpClient'
+
+const authApi = {
+  login: async (credentials: LoginFormInputs) => {
+    const response = await httpClient.post('/auth/login', credentials, {
+      withCredentials: true,
+    })
+    return response.data
+  },
+  logout: async () => {
+    const response = await httpClient.post(
+      '/auth/logout',
+      {},
+      { withCredentials: true }
+    )
+    return response.data
+  },
+  getMe: async () => {
+    try {
+      const response = await httpClient.get('/user/me', {
+        withCredentials: true,
+      })
+      return response.data
+    } catch (error) {
+      return null
+    }
+  },
+}
 
 const conversationApi = {
   createDirect: async (data: CreateDirectConversationInput) => {
@@ -26,4 +54,4 @@ const conversationApi = {
   },
 }
 
-export default { ...conversationApi }
+export default { ...conversationApi, ...authApi }
