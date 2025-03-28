@@ -1,0 +1,143 @@
+@use 'sass:color';
+@import '../../../../styles/globals.scss';
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContainer {
+  background-color: #fff;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  animation: slideDown 0.3s ease-out;
+  padding: 0px 2rem;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+    color: $text-color;
+    font-family: 'Righteous', cursive;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    flex-grow: 1;
+  }
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #666;
+  }
+}
+
+.modalBody {
+  padding: 20px;
+}
+
+.messageContainer {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.messageLogo {
+  width: 5rem;
+  height: 5rem;
+  line-height: 5rem;
+  background-color: white;
+  color: white;
+  font-size: 2rem;
+  margin: 0 auto 15px;
+}
+
+.thankYouMessage {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $text-color;
+  margin-bottom: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.verificationInfo {
+  font-size: 1rem;
+  color: $text-color;
+  margin-bottom: 8px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.emailAddress {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: $primary-color;
+  margin-bottom: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.instructions {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 25px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.gmailButton {
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d44638; // Gmail red
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'Roboto', sans-serif;
+
+  &:hover {
+    background-color: color.adjust(#d44638, $lightness: -10%);
+  }
+
+  .gmailIcon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+}

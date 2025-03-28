@@ -1,0 +1,122 @@
+@use 'sass:color';
+@import '../../styles/globals.scss';
+
+.verificationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f5f8fa;
+}
+
+.verificationCard {
+  max-width: 500px;
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.logoSection {
+  background-color: $primary-color;
+  padding: 20px;
+  text-align: center;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: 'Righteous', cursive;
+    }
+
+    .logoGraph {
+      width: 30px;
+      margin-left: 5px;
+    }
+  }
+}
+
+.contentSection {
+  padding: 30px;
+  text-align: center;
+
+  h2 {
+    margin: 0 0 15px;
+    font-size: 1.5rem;
+    color: $text-color;
+  }
+
+  p {
+    margin: 0 0 20px;
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.5;
+  }
+}
+
+.loadingState,
+.successState,
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.spinnerIcon {
+  font-size: 3rem;
+  color: $primary-color;
+  margin-bottom: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.successIcon {
+  font-size: 3rem;
+  color: rgb(215, 102, 102);
+  margin-bottom: 20px;
+}
+
+.errorIcon {
+  font-size: 3rem;
+  color: $error-color;
+  margin-bottom: 20px;
+}
+
+.helpText {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 25px;
+}
+
+.actionButton {
+  padding: 12px 25px;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: color.adjust($primary-color, $lightness: -10%);
+  }
+}

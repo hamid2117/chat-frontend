@@ -4,6 +4,7 @@ import { useAuthStatus } from './useAuth'
 import { toast } from 'react-toastify'
 import { useCallback, useEffect, useRef } from 'react'
 import { io, Socket } from 'socket.io-client'
+import conversationApi from '../services/conversation'
 
 export interface User {
   id: string
@@ -52,28 +53,6 @@ export interface CreateGroupConversationInput {
 }
 
 export const CONVERSATIONS_QUERY_KEY = ['conversations']
-
-const conversationApi = {
-  createDirect: async (data: CreateDirectConversationInput) => {
-    const response = await httpClient.post('/conversation/direct', data)
-    return response.data
-  },
-
-  createGroup: async (data: CreateGroupConversationInput) => {
-    const response = await httpClient.post('/conversation/group', data)
-    return response.data
-  },
-
-  updateGroup: async (
-    id: string,
-    data: Partial<
-      CreateGroupConversationInput & { description?: string; picture?: string }
-    >
-  ) => {
-    const response = await httpClient.put(`/conversation/group/${id}`, data)
-    return response.data
-  },
-}
 
 const fetchConversations = async (): Promise<ConversationsResponse> => {
   const response = await httpClient.get('/conversation')
