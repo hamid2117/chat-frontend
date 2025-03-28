@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import HomePage from './pages/HomePage.tsx'
-import LandingPage from './pages/LandingPage.tsx'
+import HomePage from './pages/HomePage/HomePage.tsx'
+import LandingPage from './pages/LandingPage/LandingPage.tsx'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 //import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useAuthStatus } from './hooks/useAuth'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import VerificationPage from './pages/VerificationPage.tsx'
+import VerificationPage from './pages/VerificationPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {

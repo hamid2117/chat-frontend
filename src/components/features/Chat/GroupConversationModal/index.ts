@@ -1,0 +1,2 @@
+import CreateGroupConversationModal from './GroupConversationModal'
+export default CreateGroupConversationModal

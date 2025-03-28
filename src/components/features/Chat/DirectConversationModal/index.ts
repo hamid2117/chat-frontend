@@ -1,0 +1,2 @@
+import CreateDirectConversationModal from './DirectConversationModal'
+export default CreateDirectConversationModal

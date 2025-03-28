@@ -1,0 +1,256 @@
+@use 'sass:color';
+@import '../../styles/globals.scss';
+
+.homeContainer {
+  background-color: $background-color;
+  min-height: 100vh;
+  padding: 0 2.1rem;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+// Header Styles
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  width: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: 'Saira Stencil One', sans-serif;
+
+    color: $primary-color;
+    margin: 0;
+  }
+}
+.logoGraph {
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+
+  ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin-right: 2rem;
+
+      a {
+        color: $primary-color;
+        text-decoration: none;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+
+        svg {
+          margin-left: 5px;
+          font-size: 0.8rem;
+        }
+      }
+
+      &.dropdown {
+        position: relative;
+      }
+    }
+  }
+}
+
+.tryPulseBtn {
+  background-color: $button-primary;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: color.adjust($button-primary, $lightness: -10%);
+  }
+}
+
+// Main Content Styles
+.mainContent {
+  display: flex;
+  flex: 1;
+  padding: 3rem 0;
+  justify-content: space-between;
+  align-items: start;
+  margin-top: 5rem;
+}
+
+.leftContent {
+  max-width: 800px;
+
+  .title {
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: $primary-color;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    font-family: 'Righteous', cursive;
+    letter-spacing: 2px;
+  }
+
+  .description {
+    color: $primary-color;
+    font-size: 25px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      padding: 0.8rem 2rem;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .signupBtn {
+      background-color: $button-primary;
+      color: white;
+      border: none;
+
+      &:hover {
+        background-color: color.adjust($button-primary, $lightness: -10%);
+      }
+    }
+
+    .loginBtn {
+      background-color: $button-secondary;
+      color: $primary-color;
+      border: 1px solid color.adjust($primary-color, $lightness: 60%);
+
+      &:hover {
+        background-color: color.adjust($button-secondary, $lightness: -5%);
+      }
+    }
+  }
+}
+
+.rightContent {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .worldIllustration {
+    position: relative;
+    width: 100%;
+    // max-width: 600px;
+
+    .worldMap {
+      width: 100%;
+      // max-width: 500px;
+      height: auto;
+    }
+  }
+}
+
+// Scroll Indicator
+.scrollIndicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  color: $primary-color;
+  font-size: 1.5rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0) translateX(-50%);
+  }
+  40% {
+    transform: translateY(-10px) translateX(-50%);
+  }
+  60% {
+    transform: translateY(-5px) translateX(-50%);
+  }
+}
+
+// Media Queries
+@media (max-width: 1024px) {
+  .mainContent {
+    flex-direction: column;
+    text-align: center;
+    padding-top: 2rem;
+  }
+
+  .leftContent {
+    max-width: 100%;
+    margin-bottom: 3rem;
+
+    .buttons {
+      justify-content: center;
+    }
+  }
+
+  .rightContent {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+
+    .logo {
+      margin-bottom: 1rem;
+    }
+
+    .navigation {
+      flex-direction: column;
+
+      ul {
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        li {
+          margin: 0.5rem;
+        }
+      }
+    }
+  }
+
+  .leftContent {
+    .title {
+      font-size: 2.5rem;
+    }
+  }
+}
