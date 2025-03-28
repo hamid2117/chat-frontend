@@ -7,6 +7,7 @@ import {
   BsPlusLg,
   BsBoxArrowRight,
 } from 'react-icons/bs'
+import { AiOutlineProfile } from 'react-icons/ai'
 import styles from './LeftSidebar.module.scss'
 import { useLogout } from '../../hooks/useAuth'
 import { UserData } from '../../types/auth.type'
@@ -82,6 +83,10 @@ const LeftSidebar: React.FC<{ user: UserData }> = ({ user }) => {
 
           {showLogoutDropdown && (
             <div className={styles.logoutDropdown} ref={dropdownRef}>
+              <div className={styles.logoutOption} onClick={handleLogout}>
+                <AiOutlineProfile className={styles.logoutIcon} />
+                <span>Profile</span>
+              </div>
               <div className={styles.logoutOption} onClick={handleLogout}>
                 <BsBoxArrowRight className={styles.logoutIcon} />
                 <span>Log out</span>

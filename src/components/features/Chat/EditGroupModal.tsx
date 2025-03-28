@@ -78,7 +78,6 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
       )
     : []
 
-  // Click outside handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -100,7 +99,6 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
     }
   }, [isOpen, onClose])
 
-  // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
       reset({
@@ -122,13 +120,11 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
 
     const file = files[0]
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       setError('Please select an image file')
       return
     }
 
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setError('Image must be less than 5MB')
       return
@@ -139,9 +135,7 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
     setError(null)
   }
 
-  // Convert user to participant format
   const handleAddParticipant = (user: User) => {
-    // Create a participant object from the user
     const newParticipant: Participant = {
       userId: user.id,
       user: {
@@ -179,16 +173,13 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
       formData.append('name', data.name)
       formData.append('description', data.description || '')
 
-      // Add participant IDs
       const participantIds = data.participants.map((p) => p.userId)
       formData.append('participants', JSON.stringify(participantIds))
 
-      // Add group picture if changed
       if (groupPicture) {
         formData.append('groupPicture', groupPicture)
       }
 
-      // Make the API call
       const response = await httpClient.patch(
         `/conversation/${conversationId}`,
         formData,
@@ -199,9 +190,7 @@ const EditGroupModal: React.FC<EditGroupModalProps> = ({
         }
       )
 
-      // Check if API call was successful
       if (response.status >= 200 && response.status < 300) {
-        // Call onUpdate to refresh data
         if (onUpdate) {
           onUpdate()
         }

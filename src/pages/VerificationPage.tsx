@@ -15,11 +15,9 @@ const VerificationPage: React.FC = () => {
   const verificationAttemptedRef = useRef(false)
 
   useEffect(() => {
-    // Only verify if we haven't attempted verification yet
     if (verificationAttemptedRef.current) return
 
     const verifyAccount = async () => {
-      // Set the ref to true to prevent duplicate verification attempts
       verificationAttemptedRef.current = true
 
       try {
@@ -33,8 +31,7 @@ const VerificationPage: React.FC = () => {
           return
         }
 
-        // Call verification API
-        const response = await httpClient.post('/auth/verify-email', {
+        await httpClient.post('/auth/verify-email', {
           email,
           verificationToken: token,
         })

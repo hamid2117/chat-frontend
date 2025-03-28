@@ -200,8 +200,6 @@ $chat-list-width: 280px;
   flex-direction: column;
   background-color: $secondary-color;
 
-  // Removed navbar from here as it's now at the top level
-
   .chatHeader {
     display: flex;
     justify-content: space-between;

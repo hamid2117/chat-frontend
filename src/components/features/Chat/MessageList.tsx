@@ -41,7 +41,6 @@ interface Message {
   attachments: Attachment[]
 }
 
-// Rest of your MessageListProps remains the same
 interface MessageListProps {
   messages: Message[]
   typingUsers: string[]
@@ -55,8 +54,8 @@ interface MessageListProps {
 const MessageList: React.FC<MessageListProps> = ({
   messages,
   typingUsers,
-  onUpdateMessage,
-  onDeleteMessage,
+  //onUpdateMessage,
+  //onDeleteMessage,
 }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
